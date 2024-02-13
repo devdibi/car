@@ -20,7 +20,7 @@ class LoginButton extends StatelessWidget{
       child: Text(text, style: TextStyle(color: Colors.white),),
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(Color.fromARGB(88, 88, 88, 100)),
-        fixedSize: MaterialStateProperty.all<Size>(Size(300, 60)),
+        fixedSize: MaterialStateProperty.all<Size>(Size(MediaQuery.of(context).size.width, 60)),
         side: MaterialStateProperty.all<BorderSide>(
           BorderSide(color: Colors.white)
         ),
