@@ -17,7 +17,6 @@ class CarInfo(db.Model):
     create_at = db.Column(db.DateTime)
     car_number = db.Column(db.String(45))
     carck_info = db.relationship('CarckInfo', backref='car', lazy=True)
-
 class CarckInfo(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     car_id = db.Column(db.Integer, db.ForeignKey('car_info.id'))
