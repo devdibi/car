@@ -9,16 +9,16 @@ bp = Blueprint('dashBoard', __name__)
 def get_dashboard(car_id):
     car_info = CarInfo.query.filter_by(id=car_id).first()
     if car_info:
-        carck_info = []
-        for carck in car_info.carck_info:
-            carck_info.append({
-                'image_path': carck.image_path,
-                'section': carck.section,
-                'carck': carck.carck
+        crack_info = []
+        for crack in car_info.crack_info:
+            crack_info.append({
+                'image_path': crack.image_path,
+                'section': crack.section,
+                'crack': crack.crack
             })
         response = {
             'car_number': car_info.car_number,
-            'accident_info': carck_info
+            'accident_info': crack_info
         }
         return jsonify(response)
     else:

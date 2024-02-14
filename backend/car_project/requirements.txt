@@ -3,4 +3,4 @@ flask_sqlalchemy
 mysqlclient
 flask-cors
 jsonify
-request
+flask-cors

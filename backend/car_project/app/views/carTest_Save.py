@@ -1,7 +1,7 @@
 from flask import request, jsonify, Blueprint
 from app import db
 from app.models.CarInfo import CarInfo
-from app.models.CarckInfo import CarckInfo
+from app.models.CrackInfo import CrackInfo
 
 bp = Blueprint('carTest_Save', __name__)
 
@@ -21,26 +21,26 @@ def save_car_info():
         db.session.add(car)
 
     # 사고 정보 저장
-    carck_infos = []
+    crack_infos = []
     for info in accident_info:
-        carck_info = CarckInfo(
+        crack_info = CrackInfo(
             car=car,
             section=info['section'],
-            carck=info['carck'],
+            crack=info['crack'],
             image_path=info['image_path']
         )
-        carck_infos.append(carck_info)
+        crack_infos.append(crack_info)
 
     # 데이터베이스에 반영
-    db.session.add_all(carck_infos)
+    db.session.add_all(crack_infos)
     db.session.commit()
 
     # 응답 생성
     response_accident_info = [{
-        'image_path': carck.image_path,
-        'area': carck.section,
-        'crash': carck.carck
-    } for carck in carck_infos]
+        'image_path': crack.image_path,
+        'area': crack.section,
+        'crash': crack.crack
+    } for crack in crack_infos]
     response = {
         'car_number': car_number,
         'accident_info': response_accident_info

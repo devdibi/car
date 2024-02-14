@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import config
+from flask_cors import CORS
 
 # SQLAlchemy 객체 생성
 db = SQLAlchemy()
@@ -8,11 +9,14 @@ db = SQLAlchemy()
 def create_app():
     app = Flask(__name__)
 
+    # CORS 적용
+    CORS(app, origins=['*'])
+
     # config 설정 적용
     app.config.from_object(config)
 
     # model들 불러오기
-    from .models import CarInfo, CarckInfo, UserInfo
+    from .models import CarInfo, CrackInfo, UserInfo
 
     # 모든 모델 클래스를 SQLAlchemy에 등록
     with app.app_context():
