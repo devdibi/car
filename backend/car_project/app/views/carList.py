@@ -1,8 +1,8 @@
 from flask import jsonify, Blueprint
+
 from app.models.CarInfo import CarInfo
 
 bp = Blueprint('carList', __name__)
-
 
 # 추후에 차종 값을 추가할 수도 있음
 @bp.route('/list/<int:user_id>', methods=['GET'])

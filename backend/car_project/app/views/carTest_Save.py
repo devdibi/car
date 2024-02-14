@@ -1,7 +1,9 @@
 from flask import request, jsonify, Blueprint
+
 from app import db
 from app.models.CarInfo import CarInfo
 from app.models.CrackInfo import CrackInfo
+from app.upload import upload_image
 
 bp = Blueprint('carTest_Save', __name__)
 
@@ -19,6 +21,20 @@ def save_car_info():
     if not car:
         car = CarInfo(car_number=car_number)
         db.session.add(car)
+
+    @bp.route('/register', methods=['POST'])
+    def register_car():
+        image_file = request.files.get('image')
+
+        # 이미지를 버킷에 업로드하고 URL을 받아옴
+        image_url = upload_image(image_file, image_file.filename)
+
+        # CrackInfo 객체 생성 및 데이터베이스에 저장
+        crack_info = CrackInfo(car_id=None, section=None, crack=None, image_path=image_url)
+        db.session.add(crack_info)
+        db.session.commit()
+
+        return jsonify({'message': 'Car registered successfully'}), 200
 
     # 사고 정보 저장
     crack_infos = []
