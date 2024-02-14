@@ -1,8 +1,8 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
-app = Flask(__name__)
+bp = Blueprint('login', __name__)
 CORS(app, origins=['http://localhost:54013'])
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://min:min123!@devdibi.duckdns.org/min'  # SQLite를 사용하는 예시입니다.
 db = SQLAlchemy(app)
@@ -14,7 +14,7 @@ class UserInfo(db.Model):
     pw = db.Column(db.String(120), nullable=False)
     user_name = db.Column(db.String(80), nullable=False)
 
-@app.route("/login",methods=['POST'])
+@bp.route("/login",methods=['POST'])
 def get_user():
     data = request.json
 
@@ -43,9 +43,5 @@ def get_user():
             }
 
     return jsonify(res)
-
-if __name__ == "__main__":
-    app.run(debug=True)
-
 
 
