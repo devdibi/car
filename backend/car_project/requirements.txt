@@ -4,3 +4,4 @@ mysqlclient
 flask-cors
 jsonify
 flask-cors
+google-cloud
