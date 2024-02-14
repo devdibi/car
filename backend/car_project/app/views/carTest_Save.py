@@ -59,23 +59,23 @@ def save_car_info():
     return jsonify(response)
 
 @bp.route('/register', methods=['POST'])
-    def register_car():
-        image_file = request.files.get('image') # multipart-file로 파일 로드
+def register_car():
+    image_file = request.files.get('image') # multipart-file로 파일 로드
 
-        # 이미지를 버킷에 업로드하고 URL을 받아옴
-        # 테스트 할때는 파일명으로 사용 => 완성하면서 운영할때는 별도로 파일명, 경로 구성
-        image_url = upload_image(image_file, image_file.filename)
+    # 이미지를 버킷에 업로드하고 URL을 받아옴
+    # 테스트 할때는 파일명으로 사용 => 완성하면서 운영할때는 별도로 파일명, 경로 구성
+    image_url = upload_image(image_file, image_file.filename)
 
-        # model에 전송
-        # 응답
-        # crack_info에 저장
+    # model에 전송
+    # 응답
+    # crack_info에 저장
 
-        # CrackInfo 객체 생성 및 데이터베이스에 저장
-        # car_id는 임시값 => car_id는 요청에 포함될 예정
-        # Null 보다는 특정 값이라도 있는게 좋다.
-        crack_info = CrackInfo(car_id= 1,section=-1, crack=-1, image_path=image_url)
-        db.session.add(crack_info)
-        db.session.commit()
+    # CrackInfo 객체 생성 및 데이터베이스에 저장
+    # car_id는 임시값 => car_id는 요청에 포함될 예정
+    # Null 보다는 특정 값이라도 있는게 좋다.
+    crack_info = CrackInfo(car_id= 1,section=-1, crack=-1, image_path=image_url)
+    db.session.add(crack_info)
+    db.session.commit()
 
 
-        return jsonify({'message': 'Car registered successfully'}), 200
+    return jsonify({'message': 'Car registered successfully'}), 200
