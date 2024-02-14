@@ -16,37 +16,50 @@ class MainCard extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return ElevatedButton(
-      onPressed: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => next));
-      },
-      style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
-          fixedSize: MaterialStateProperty.all(Size.fromWidth(300)),
-          elevation: MaterialStateProperty.all(5),
-          shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
-          padding: MaterialStateProperty.all(EdgeInsets.zero)
-      ),
-      child: Container(
-        width: 400,
-        height: 150,
-        child: Column(
-          children: [
-            ListTile(
-                title: Text(carNumber),
-                titleTextStyle: TextStyle(
-                    fontSize: 20, color: Colors.black,)
-            ),
-            ListBody(
+          onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => next));
+          },
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Color.fromARGB(88, 88, 88, 100)),
+            fixedSize: MaterialStateProperty.all<Size>(Size(50,150)),
+            shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
+          ),
+          child: Container(
+            child: Row(
               children: [
                 Container(
-                  padding: EdgeInsets.fromLTRB(20, 0, 20, 5),
-                  child: Text('등록일자 : $date', style: TextStyle(color: Colors.black),),
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(50))),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(50),
+                    child: Image.asset('assets/images/tucson.jpeg', fit: BoxFit.cover,),
+                  ),
                 ),
+                Expanded(
+                  child: Container(
+                    width: 100,
+                    height: 100,
+                    child: Column(
+                      children: [
+                      ListTile(
+                            title: Text(carNumber, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),),
+                        ),
+                        ListBody(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.fromLTRB(15, 0, 20, 5),
+                              child: Text('등록일자 : $date', style: TextStyle(fontSize: 16, color: Colors.white),),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),)
               ],
-            )
-          ],
-        ),
-      ),
-    );
+            ),
+          ),
+      );
+
   }
 }
