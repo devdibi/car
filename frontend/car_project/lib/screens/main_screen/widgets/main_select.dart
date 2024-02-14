@@ -21,7 +21,7 @@ class MainSelect extends StatelessWidget{
       },
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(Color.fromRGBO(247, 247, 247, 100)),
-        fixedSize: MaterialStateProperty.all<Size>(Size(300,370)),
+        fixedSize: MaterialStateProperty.all<Size>(Size(300,300)),
         shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
       ),
       child: Container(
@@ -29,25 +29,18 @@ class MainSelect extends StatelessWidget{
             children : [
               Expanded(
                 child: Container(
-                  child: ClipRect(child: Image.asset('assets/images/car/kona/common (4).png',fit: BoxFit.cover,),)
+                  child: ClipRect(child: Image.asset('assets/images/car/hyundai/avante/common (4).png', fit: BoxFit.fitWidth,),)
                 ),
             ),
               Container(
                 width: 400,
                 height: 100,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ListTile(
-                      title: Text(carNumber, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),),
-                    ),
-                    ListBody(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.fromLTRB(15, 0, 20, 5),
-                          child: Text('등록일자 : $date', style: TextStyle(fontSize: 16, color: Colors.white),),
-                        ),
-                      ],
-                    )
+                    Text(carNumber, style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.white),),
+                    Text('등록일자 : $date', style: TextStyle(fontSize: 16, color: Colors.white),),
                   ],
                 ),
               )

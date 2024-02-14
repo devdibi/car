@@ -9,7 +9,6 @@ class CheckScreen extends StatefulWidget{
 }
 
 class _CheckScreenState extends State<CheckScreen>{
-
   @override
   void initState(){
 
@@ -19,33 +18,25 @@ class _CheckScreenState extends State<CheckScreen>{
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: Text('점검 목록', style: TextStyle(fontSize: 36),),
-        toolbarHeight: 100,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            // 뒤로가기 버튼을 눌렀을 때 동작할 코드를 작성합니다.
-            Navigator.pop(context);
-          },
-        ),
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1),
-          child: Divider(
-            color: Colors.black,
-            thickness: 3,
-          ),
-        ),
+        title: Text('점검 목록', style: TextStyle(fontSize: 24),),
+        toolbarHeight: 50,
+        leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () {Navigator.pop(context);},),
       ),
       body: Container(
         padding: EdgeInsets.fromLTRB(20, 30, 20, 0),
-        child: Column(
-          children: [
-            Container(
-
-            )
-          ],
-        )
+        child:
+          // fetchData를 이용해서 데이터 로딩 후 랜더링
+          Center(child: Container(width: 500, height: 900, color: Colors.greenAccent,),),
       ),
     );
   }
+
+  // Future<List<Widget>> fetchData(){
+  //
+  //   // Text
+  //   // Image
+  //   // Info
+  // }
+
+
 }

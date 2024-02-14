@@ -27,29 +27,19 @@ class MainCard extends StatelessWidget{
           child: Container(
             child: Row(
               children: [
-                Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(50))),
-                  child: Image.asset('assets/images/car/kona/common (4).png',),
+                Container(width: 70, height: 70, decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(50))), child: Image.asset('assets/images/car/hyundai/avante/common (4).png', fit: BoxFit.fitWidth,),
                 ),
+                SizedBox(width: 10,),
                 Expanded(
                   child: Container(
                     width: 100,
                     height: 100,
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                      ListTile(
-                            title: Text(carNumber, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),),
-                        ),
-                        ListBody(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.fromLTRB(15, 0, 20, 5),
-                              child: Text('등록일자 : $date', style: TextStyle(fontSize: 16, color: Colors.white),),
-                            ),
-                          ],
-                        )
+                        Text(carNumber, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),),
+                        Text('등록일자 : $date', style: TextStyle(fontSize: 12, color: Colors.white),),
                       ],
                     ),
                   ),)

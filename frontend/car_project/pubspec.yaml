@@ -39,8 +39,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  http: ^0.13.3
-  intl: ^0.17.0
+  http:
+  intl:
+  provider:
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -60,7 +61,25 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - assets/images/car/kona/
+    - assets/images/car/hyundai/avante/
+    - assets/images/car/hyundai/g90/
+    - assets/images/car/hyundai/grandeur/
+    - assets/images/car/hyundai/ionic5/
+    - assets/images/car/hyundai/ionic6/
+    - assets/images/car/hyundai/kona/
+    - assets/images/car/hyundai/santafe/
+    - assets/images/car/hyundai/sonata/
+    - assets/images/car/hyundai/tucson/
+    - assets/images/car/kia/EV6/
+    - assets/images/car/kia/EV9/
+    - assets/images/car/kia/K3/
+    - assets/images/car/kia/K5/
+    - assets/images/car/kia/K9/
+    - assets/images/car/kia/morning/
+    - assets/images/car/kia/niro/
+    - assets/images/car/kia/seltos/
+    - assets/images/car/kia/sorento/
+    - assets/images/car/kia/sportage/
     - assets/images/
   # To add assets to your application, add an assets section, like this:
   #   - images/a_dot_burr.jpeg
