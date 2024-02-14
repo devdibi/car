@@ -1,30 +1,11 @@
-from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
+from flask import request, jsonify, Blueprint
+from app import db
+from app.models.CarInfo import CarInfo
+from app.models.CarckInfo import CarckInfo
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://min:min123!@devdibi.duckdns.org/min'
-db = SQLAlchemy(app)
+bp = Blueprint('carTest_Save', __name__)
 
-class UserInfo(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(45))
-    pw = db.Column(db.String(255))
-    user_name = db.Column(db.String(45))
-    cars = db.relationship('CarInfo', backref='user', lazy=True)
-
-class CarInfo(db.Model):
-    user_id = db.Column(db.Integer, primary_key=True)
-    create_at = db.Column(db.DateTime)
-    car_number = db.Column(db.String(45))
-    carck_info = db.relationship('CarckInfo', backref='car', lazy=True)
-class CarckInfo(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    car_id = db.Column(db.Integer, db.ForeignKey('car_info.id'))
-    section = db.Column(db.Integer)
-    carck = db.Column(db.Integer)
-    image_path = db.Column(db.String(255))
-
-@app.route('/save', methods=['POST'])
+@bp.route('/save', methods=['POST'])
 def save_car_info():
     data = request.json
     if 'car_number' not in data or 'accident_info' not in data:
@@ -66,5 +47,3 @@ def save_car_info():
     }
     return jsonify(response)
 
-if __name__ == '__main__':
-    app.run(debug=True)
