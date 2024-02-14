@@ -4,7 +4,7 @@ from flask_cors import CORS
 from app.models.UserInfo import UserInfo
 
 bp = Blueprint('login', __name__)
-CORS(bp, origins=['http://localhost:54013'])
+
 
 @bp.route("/login",methods=['POST'])
 def get_user():
@@ -24,14 +24,14 @@ def get_user():
     password = data['password']
 
     # db 조회
-    user = UserInfo.query.filter_by(email=email, pw=password).first()
+    user = UserInfo.query.filter_by(email=email, password=password).first()
 
     if user is not None:
         res['isLogined'] = True
         res['user'] = {
                 'id' : user.id,
                 'email' : user.email,
-                'name' : user.user_name
+                'name' : user.name
             }
 
     return jsonify(res)

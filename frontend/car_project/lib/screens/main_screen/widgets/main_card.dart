@@ -20,8 +20,8 @@ class MainCard extends StatelessWidget{
             Navigator.push(context, MaterialPageRoute(builder: (context) => next));
           },
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Color.fromARGB(88, 88, 88, 100)),
-            fixedSize: MaterialStateProperty.all<Size>(Size(50,150)),
+            backgroundColor: MaterialStateProperty.all(Color.fromRGBO(150, 150, 150, 100)),
+            fixedSize: MaterialStateProperty.all<Size>(Size(50,100)),
             shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
           ),
           child: Container(
@@ -31,10 +31,7 @@ class MainCard extends StatelessWidget{
                   width: 100,
                   height: 100,
                   decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(50))),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: Image.asset('assets/images/tucson.jpeg', fit: BoxFit.cover,),
-                  ),
+                  child: Image.asset('assets/images/car/kona/common (4).png',),
                 ),
                 Expanded(
                   child: Container(
