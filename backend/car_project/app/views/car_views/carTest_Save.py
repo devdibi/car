@@ -1,9 +1,7 @@
 from flask import request, jsonify, Blueprint
 
 from app import db
-from app.models.CarInfo import CarInfo
-from app.models.CrackInfo import CrackInfo
-from app.upload import upload_image
+from app.util.upload import upload_image
 
 bp = Blueprint('carTest_Save', __name__, url_prefix='/check')
 
@@ -37,7 +35,7 @@ def save_car_info():
         crack_info = CrackInfo(
             car=car,
             section=info['section'],
-            crack=info['crack'],
+            degree=info['degree'],
             image_path=info['image_path']
         )
         crack_infos.append(crack_info)
@@ -49,8 +47,8 @@ def save_car_info():
     # 응답 생성
     response_accident_info = [{
         'image_path': crack.image_path,
-        'area': crack.section,
-        'crash': crack.crack
+        'section': crack.section,
+        'degree': crack.degree
     } for crack in crack_infos]
     response = {
         'car_number': car_number,

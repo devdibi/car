@@ -5,3 +5,5 @@ flask-cors
 jsonify
 flask-cors
 google-cloud
+google
+google-cloud-storage

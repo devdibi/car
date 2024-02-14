@@ -16,7 +16,7 @@ def create_app():
     app.config.from_object(config)
 
     # model들 불러오기
-    from .models import CarInfo, CrackInfo, UserInfo
+    from .models import car_model, crack_model, user_model, section_model
 
     # 모든 모델 클래스를 SQLAlchemy에 등록
     with app.app_context():
@@ -25,13 +25,13 @@ def create_app():
 
     # Blueprint 등록
     # bp 객체 로드
-    from .views import login, register, carList, dashBoard, carTest_Save
+    from app.views.car_views import carTest_Save
+    from app.views.user_views import user_view
+    from app.views.car_views import car_view, check_view
 
     # Blueprint 객체 bp 등록
-    app.register_blueprint(login.bp)
-    app.register_blueprint(register.bp)
-    app.register_blueprint(carList.bp)
-    app.register_blueprint(dashBoard.bp)
-    app.register_blueprint(carTest_Save.bp)
+    app.register_blueprint(user_view.bp)
+    app.register_blueprint(car_view.bp)
+    app.register_blueprint(check_view.bp)
 
     return app
