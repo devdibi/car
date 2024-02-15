@@ -1,23 +1,44 @@
-import os
+from flask import request, jsonify, current_app
 from google.cloud import storage
 
-def upload_image(file, filename):
-    # 환경 변수에서 인증 파일 경로를 가져오고 액세스 설정
-    credentials_path = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
-    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials_path
+from app import db
+from app.models.section_model import Section
 
+
+def upload():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+
+    # Google 서비스 계정 키 파일의 경로 가져오기
+    credentials_path = current_app.config['GOOGLE_APPLICATION_CREDENTIALS']
+    # 클라이언트 생성
+    client = storage.Client.from_service_account_json(credentials_path)
     # 버킷 이름 가져오기
-    bucket_name = 'BUCKET_NAME'
-    # Google 클라우드 스토리지 클라이언트 생성
-    client = storage.Client()
-
-    # 버킷 및 블롭 생성
+    bucket_name = current_app.config.get('BUCKET_NAME')
+    # 버킷 가져오기
     bucket = client.bucket(bucket_name)
-    blob = bucket.blob(filename)
-
-    # 블롭에 파일 업로드
+    # 이미지 업로드
+    blob = bucket.blob(file.filename)
     blob.upload_from_file(file)
 
-    # 업로드된 이미지의 공개 URL 반환
+    # ACL 설정: 특정 서비스 계정에 읽기 권한 부여
+    bucket.blob(file.filename).acl.user(current_app.config.get('service_account_email')).grant_read()
+
+    # 공개 URL 생성
     public_url = blob.public_url
-    return public_url
+
+    # 업로드한 이미지의 URL 가져오기
+    image_url = public_url
+
+    # SQLAlchemy를 사용하여 이미지 URL을 데이터베이스에 저장
+    new_section = Section(image_path=image_url)
+    db.session.add(new_section)
+    db.session.commit()
+
+    return jsonify({'message': 'Image uploaded successfully', 'image_url': image_url}), 200
+
+

@@ -1,16 +1,39 @@
+# cartestsave_test
 from flask import request, jsonify, Blueprint
 
 from app import db
+from app.models.car_model import Car
+from app.models.crack_model import Crack
 from app.util.upload import upload_image
+
+import json
+
 
 bp = Blueprint('carTest_Save', __name__, url_prefix='/check')
 
 # route = /create
-# car_info를 먼저 생성
-# 완성이 되지 않으면 => 대시보드가 아닌 체크 페이지로 다시 넘어갈 수 있도록
+# 완성이 되지 않으면 => 대시보드가 아닌 체크 페이지로 다시 넘어갈 수 있도록 (아직 구현 안됌)
+
+@bp.route('/create', methods=['POST'])
+def create_car():
+    # POST 요청에서 데이터 가져오기
+    data = request.json
+    user_id = data.get('user_id')
+    car_number = data.get('car_number')
+    car_type = data.get('car_type')
+
+    # 새로운 Car 객체 생성
+    new_car = Car(user_id=user_id, car_number=car_number, car_type=car_type)
+
+    # 데이터베이스에 추가
+    db.session.add(new_car)
+    db.session.commit()
+
+    return jsonify({'message': 'Car created successfully'}), 201
 
 # route = /list
 # 현재 차량의 검사 현황 리스트를 조회
+
 
 @bp.route('/save', methods=['POST'])
 def save_car_info():
@@ -22,26 +45,26 @@ def save_car_info():
     accident_info = data['accident_info']
 
     # 차량 정보 확인
-    car = CarInfo.query.filter_by(car_number=car_number).first()
+    car = Car.query.filter_by(car_number=car_number).first()
     if not car:
-        car = CarInfo(car_number=car_number)
+        car = Car(car_number=car_number)
         db.session.add(car)
 
     # -----------------------------
 
     # 사고 정보 저장
-    crack_infos = []
+    cracks = []
     for info in accident_info:
-        crack_info = CrackInfo(
+        crack = Crack(
             car=car,
             section=info['section'],
             degree=info['degree'],
             image_path=info['image_path']
         )
-        crack_infos.append(crack_info)
+        cracks.append(crack)
 
     # 데이터베이스에 반영
-    db.session.add_all(crack_infos)
+    db.session.add_all(cracks)
     db.session.commit()
 
     # 응답 생성
@@ -49,7 +72,7 @@ def save_car_info():
         'image_path': crack.image_path,
         'section': crack.section,
         'degree': crack.degree
-    } for crack in crack_infos]
+    } for crack in cracks]
     response = {
         'car_number': car_number,
         'accident_info': response_accident_info
@@ -65,14 +88,32 @@ def register_car():
     image_url = upload_image(image_file, image_file.filename)
 
     # model에 전송
-    # 응답
-    # crack_info에 저장
+    # 응답(아직 구현 못함)
 
-    # CrackInfo 객체 생성 및 데이터베이스에 저장
-    # car_id는 임시값 => car_id는 요청에 포함될 예정
+    # crack에 저장 (model_response 임의로 지정)
+    model_response = [
+        {"section": 1, "degree": 3, "image_path": "example.com/image1.jpg"},
+        {"section": 2, "degree": 2, "image_path": "example.com/image2.jpg"}
+    ]
+
+    # Crack 객체 생성 및 데이터베이스에 저장
+    for crack_info in model_response:
+        crack = Crack(
+            section=crack_info['section'],
+            degree=crack_info['degree'],
+            image_path=crack_info['image_path']
+        )
+        db.session.add(crack)
+
+    db.session.commit()
+
+    return jsonify({'message': 'Car registered successfully'}), 200
+
+    # Crack 객체 생성 및 데이터베이스에 저장
+    # car_id는 요청에 포함될 예정
     # Null 보다는 특정 값이라도 있는게 좋다.
-    crack_info = CrackInfo(car_id= 1,section=-1, crack=-1, image_path=image_url)
-    db.session.add(crack_info)
+    crack = Crack(car_id= 1,section=-1, crack=-1, image_path=image_url)
+    db.session.add(crack)
     db.session.commit()
 
 
