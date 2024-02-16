@@ -4,7 +4,7 @@ from flask import request, jsonify, Blueprint
 from app import db
 from app.models.car_model import Car
 from app.models.crack_model import Crack
-from app.util.upload import upload_image
+from app.util.upload import upload
 
 import json
 
@@ -85,7 +85,7 @@ def register_car():
 
     # 이미지를 버킷에 업로드하고 URL을 받아옴
     # 테스트 할때는 파일명으로 사용 => 완성하면서 운영할때는 별도로 파일명, 경로 구성
-    image_url = upload_image(image_file, image_file.filename)
+    image_url = upload(image_file, image_file.filename)
 
     # model에 전송
     # 응답(아직 구현 못함)
