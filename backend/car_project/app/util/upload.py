@@ -25,9 +25,6 @@ def upload():
     blob = bucket.blob(file.filename)
     blob.upload_from_file(file)
 
-    # ACL 설정: 특정 서비스 계정에 읽기 권한 부여
-    bucket.blob(file.filename).acl.user(current_app.config.get('service_account_email')).grant_read()
-
     # 공개 URL 생성
     public_url = blob.public_url
 
@@ -41,4 +38,7 @@ def upload():
 
     return jsonify({'message': 'Image uploaded successfully', 'image_url': image_url}), 200
 
-
+    # # ACL 설정이 만약 필요하면..
+    # acl = blob.acl
+    # acl.all_authenticated().grant_read()
+    # acl.save()
