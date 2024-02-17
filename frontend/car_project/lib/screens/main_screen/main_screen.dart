@@ -8,12 +8,22 @@ import 'package:car_project/main.dart';
 import 'package:car_project/screens/check_screen/check_screen.dart';
 import 'package:car_project/screens/main_screen/widgets/main_card.dart';
 import 'package:car_project/screens/main_screen/widgets/main_select.dart';
+import 'package:car_project/screens/regist_screen/regist_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:camera/camera.dart';
+import 'dart:io';
 
 class MainScreen extends StatefulWidget{
+  final CameraDescription? camera;
+
+  MainScreen({
+    Key? key,
+    required this.camera
+  }): super(key: key);
+
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -34,28 +44,26 @@ class _MainScreenState extends State<MainScreen> {
     // 이미지 캐싱 => 후에는 경로 변경해서 최초 선택된 차종을 선택
     // 이미지를 받아올 때 리스트로 캐싱할 이미지 선택한다
 
-    precacheImage(AssetImage('assets/images/car/hyundai/kona/common (4).png'), context);
-
     return Scaffold(
         body: Container(
-          padding: EdgeInsets.fromLTRB(10, 50, 10, 0),
+          padding: const EdgeInsets.fromLTRB(10, 50, 10, 0),
           child: FutureBuilder<List<Widget>>(
             future: list,
             builder: (context, s){
               if(s.connectionState == ConnectionState.waiting){
-                return Center(child: CircularProgressIndicator()); // 랜더링 되지 않았으면 프로그래스 링 출력
+                return const Center(child: CircularProgressIndicator()); // 랜더링 되지 않았으면 프로그래스 링 출력
               }else if (s.hasError){
                 return Center(child: Text("Error : ${s.error}")); // 예기치 못한 오류
               }else{
                 // 최종 결과물
                 return Stack(
                   children: [
-                    ListView(padding: EdgeInsets.fromLTRB(20, 10, 20, 50), children: s.data ?? []), // 하단 페이지
+                    ListView(padding: const EdgeInsets.fromLTRB(20, 10, 20, 50), children: s.data ?? []), // 하단 페이지
                     // 추가 버튼
                     Positioned(right: 10, bottom: 50,
-                      child: ElevatedButton(onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => CheckScreen()));}, // 생성 페이지로 이동
-                          child: Container(height: 80, width: 30, padding: EdgeInsets.zero, child: Center(child: Text("+", style: TextStyle(fontSize: 50, color: Colors.white),),),),
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color.fromRGBO(88, 88, 88, 100)))
+                      child: ElevatedButton(onPressed: () {Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RegistScreen(camera: widget.camera,)));},
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(88, 88, 88, 100))), // 생성 페이지로 이동
+                          child: Container(height: 80, width: 30, padding: EdgeInsets.zero, child: const Center(child: Text("+", style: TextStyle(fontSize: 50, color: Colors.white),),),)
                       ),
                     )
                   ],
@@ -73,34 +81,36 @@ class _MainScreenState extends State<MainScreen> {
 
       var id = provider.user!.getId();
 
-      var url = Uri.parse('http://127.0.0.1:5000/car/list/$id');
+
+      var url = Uri.parse('http://gcp-backend.duckdns.org:5000/car/list/$id');
 
       var response = await http.get(url);
 
+      var responseData = json.decode(response.body);
+
       List<Widget> list = [];
 
-      List carList = json.decode(response.body)['car_list'];
-      int len = json.decode(response.body)['len'];
+      List carList = responseData['data'];
 
-      list.add(Container(child: Text("등록차량", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))));
-      list.add(Height(height: 30),);
+      list.add(Container(child: const Text("등록차량", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))));
+      list.add(const Height(height: 30),);
 
       setState(() {
-        if(len != 0){
-          list.add(MainSelect(carNumber: carList[0][0], date: convert(carList[0][1]), next: DummyPage()));
-          list.add(Height(height: 20,));
-          for(int i = 1; i < len; i++){
-            list.add(MainCard(carNumber: carList[i][0], date: convert(carList[i][1]), next: DummyPage(),));
-            list.add(Height(height: 20,));
+        if(carList.isNotEmpty){
+          list.add(MainSelect(carNumber: carList[0]['car_number'], date: convert(carList[0]['created_at']), carType: carList[0]['car_type'], next: const DummyPage()));
+          list.add(const Height(height: 20,));
+          for(int i = 1; i < carList.length; i++){
+            list.add(MainCard(carNumber: carList[i]['car_number'], date: convert(carList[i]['created_at']), carType: carList[i]['car_type'], next: const DummyPage(),));
+            list.add(const Height(height: 20,));
           }
         }else{
-          list.add(Center(child: Text("차량이 존재하지 않습니다."))); // 차량 추가하는 버튼으로 교체한다.
+          list.add(const Center(child: Text("차량이 존재하지 않습니다."))); // 차량 추가하는 버튼으로 교체한다.
         }
       });
       return list;
     } catch (e) {
       print(e);
-      throw(e);
+      rethrow;
     }
   }
   String convert(String dt){

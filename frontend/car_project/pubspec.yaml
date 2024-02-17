@@ -42,6 +42,7 @@ dev_dependencies:
   http:
   intl:
   provider:
+  camera:
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -61,25 +62,26 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - assets/images/car/hyundai/avante/
-    - assets/images/car/hyundai/g90/
-    - assets/images/car/hyundai/grandeur/
-    - assets/images/car/hyundai/ionic5/
-    - assets/images/car/hyundai/ionic6/
-    - assets/images/car/hyundai/kona/
-    - assets/images/car/hyundai/santafe/
-    - assets/images/car/hyundai/sonata/
-    - assets/images/car/hyundai/tucson/
-    - assets/images/car/kia/EV6/
-    - assets/images/car/kia/EV9/
-    - assets/images/car/kia/K3/
-    - assets/images/car/kia/K5/
-    - assets/images/car/kia/K9/
-    - assets/images/car/kia/morning/
-    - assets/images/car/kia/niro/
-    - assets/images/car/kia/seltos/
-    - assets/images/car/kia/sorento/
-    - assets/images/car/kia/sportage/
+    - assets/images/car/AVANTE/
+    - assets/images/car/G90/
+    - assets/images/car/GRANDEUR/
+    - assets/images/car/IONIQ5/
+    - assets/images/car/IONIQ6/
+    - assets/images/car/KONA/
+    - assets/images/car/SANTAFE/
+    - assets/images/car/SONATA/
+    - assets/images/car/TUCSON/
+    - assets/images/car/EV6/
+    - assets/images/car/EV9/
+    - assets/images/car/K3/
+    - assets/images/car/K5/
+    - assets/images/car/K9/
+    - assets/images/car/MORNING/
+    - assets/images/car/NIRO/
+    - assets/images/car/SELTOS/
+    - assets/images/car/SORENTO/
+    - assets/images/car/SPORTAGE/
+    - assets/images/car/ETC/
     - assets/images/
   # To add assets to your application, add an assets section, like this:
   #   - images/a_dot_burr.jpeg
