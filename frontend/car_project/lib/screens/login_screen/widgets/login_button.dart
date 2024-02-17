@@ -17,15 +17,15 @@ class LoginButton extends StatelessWidget{
   Widget build(BuildContext context){
     return ElevatedButton(
       onPressed: onPressed,
-      child: Text(text, style: TextStyle(color: Colors.white),),
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(Color.fromARGB(88, 88, 88, 100)),
+        backgroundColor: MaterialStateProperty.all(const Color.fromARGB(88, 88, 88, 100)),
         fixedSize: MaterialStateProperty.all<Size>(Size(MediaQuery.of(context).size.width, 60)),
         side: MaterialStateProperty.all<BorderSide>(
-          BorderSide(color: Colors.white)
+          const BorderSide(color: Colors.white)
         ),
         shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)))
       ),
+      child: Text(text, style: const TextStyle(color: Colors.white),),
     );
   }
 }
