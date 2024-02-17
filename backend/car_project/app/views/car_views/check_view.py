@@ -4,6 +4,7 @@ from flask import jsonify, Blueprint, request
 
 from app.models.car_model import Car
 from app.models.crack_model import Crack
+from app.util.upload import upload
 
 bp = Blueprint('checkCar', __name__, url_prefix='/check')
 
@@ -26,3 +27,5 @@ def get_car_list(car_id):
 
 # 3. 모든 검사를 완료 하는 route
 
+   # image_path 모델로 보냄
+   # 구역별로 이미지 저장할때 image_path 저장 하는 메소드
