@@ -4,7 +4,7 @@ from flask import request, jsonify, Blueprint
 from app import db
 from app.models.car_model import Car
 from app.models.crack_model import Crack
-from app.util.upload import upload
+
 
 import json
 
@@ -81,33 +81,6 @@ def save_car_info():
 
 @bp.route('/register', methods=['POST'])
 def register_car():
-    image_file = request.files.get('image') # multipart-file로 파일 로드
-
-    # 이미지를 버킷에 업로드하고 URL을 받아옴
-    # 테스트 할때는 파일명으로 사용 => 완성하면서 운영할때는 별도로 파일명, 경로 구성
-    image_url = upload(image_file, image_file.filename)
-
-    # model에 전송
-    # 응답(아직 구현 못함)
-
-    # crack에 저장 (model_response 임의로 지정)
-    model_response = [
-        {"section": 1, "degree": 3, "image_path": "example.com/image1.jpg"},
-        {"section": 2, "degree": 2, "image_path": "example.com/image2.jpg"}
-    ]
-
-    # Crack 객체 생성 및 데이터베이스에 저장
-    for crack_info in model_response:
-        crack = Crack(
-            section=crack_info['section'],
-            degree=crack_info['degree'],
-            image_path=crack_info['image_path']
-        )
-        db.session.add(crack)
-
-    db.session.commit()
-
-    return jsonify({'message': 'Car registered successfully'}), 200
 
     # Crack 객체 생성 및 데이터베이스에 저장
     # car_id는 요청에 포함될 예정
