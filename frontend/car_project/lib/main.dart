@@ -1,14 +1,17 @@
 
+
 import 'package:car_project/model/user_data.dart';
+import 'package:car_project/screens/camera_screen/camera_screen.dart';
 import 'package:car_project/screens/check_screen/check_screen.dart';
 import 'package:car_project/screens/login_screen/login_screen.dart';
 import 'package:car_project/screens/logo_screen/logo_screens.dart';
 import 'package:car_project/screens/main_screen/main_screen.dart';
 import 'package:car_project/screens/regist_screen/regist_screen.dart';
+
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'dart:io';
+
 
 
 void main() async {
@@ -40,9 +43,6 @@ class MyApp extends StatelessWidget{
       create: (context) => Setting(),
       child: MaterialApp(
         home: LogoScreen(camera: camera),
-        routes: {
-          '/check' : (context) => CheckScreen(camera: camera)
-        },
       )
     );
   }

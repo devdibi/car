@@ -23,7 +23,7 @@ class _SelectWidgetState extends State<SelectWidget>{
           height: 70,
           child: DropdownButton<String>(
               focusColor: Colors.transparent,
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 16, color: Colors.black),
               icon: SizedBox(),
               padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
               // underline: SizedBox(),

@@ -6,8 +6,9 @@ from app import db
 class Section(db.Model):
     __tablename__ = 'section'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    car_id = db.Column(db.Integer, db.ForeignKey('car.id'))
-    section = db.Column(db.Integer)
+    car_id = db.Column(db.Integer, db.ForeignKey('car.id'), nullable=False)
+    section = db.Column(db.Integer ,nullable=False)
     cracks = db.relationship('Crack', backref='section', lazy=True)
+    checked = db.Column(db.Integer, default=0, nullable=False)
     image_path = db.Column(db.String(255))
 

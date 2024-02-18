@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:car_project/api_util/url.dart';
 import 'package:car_project/common_widgets/dummy_page.dart';
 import 'package:car_project/common_widgets/space_height.dart';
 import 'package:car_project/main.dart';
@@ -9,6 +10,7 @@ import 'package:car_project/screens/check_screen/check_screen.dart';
 import 'package:car_project/screens/main_screen/widgets/main_card.dart';
 import 'package:car_project/screens/main_screen/widgets/main_select.dart';
 import 'package:car_project/screens/regist_screen/regist_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -47,6 +49,8 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
         body: Container(
           padding: const EdgeInsets.fromLTRB(10, 50, 10, 0),
+          // height: MediaQuery.of(context).size.height,
+          // width: MediaQuery.of(context).size.width,
           child: FutureBuilder<List<Widget>>(
             future: list,
             builder: (context, s){
@@ -82,7 +86,7 @@ class _MainScreenState extends State<MainScreen> {
       var id = provider.user!.getId();
 
 
-      var url = Uri.parse('http://gcp-backend.duckdns.org:5000/car/list/$id');
+      var url = Uri.parse('${URI()}/car/list/$id');
 
       var response = await http.get(url);
 
@@ -91,20 +95,31 @@ class _MainScreenState extends State<MainScreen> {
       List<Widget> list = [];
 
       List carList = responseData['data'];
-
+      print(carList);
       list.add(Container(child: const Text("등록차량", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))));
       list.add(const Height(height: 30),);
 
       setState(() {
         if(carList.isNotEmpty){
-          list.add(MainSelect(carNumber: carList[0]['car_number'], date: convert(carList[0]['created_at']), carType: carList[0]['car_type'], next: const DummyPage()));
+          list.add(
+              MainSelect(carNumber: carList[0]['car_number'],
+                date: convert(carList[0]['created_at']),
+                carType: carList[0]['car_type'],
+                next: carList[0]['checked'] != 0 ? DummyPage() : CheckScreen(camera: widget.camera, carId: carList[0]['id'])));
+
           list.add(const Height(height: 20,));
+
           for(int i = 1; i < carList.length; i++){
-            list.add(MainCard(carNumber: carList[i]['car_number'], date: convert(carList[i]['created_at']), carType: carList[i]['car_type'], next: const DummyPage(),));
+            list.add(
+                MainCard(carNumber: carList[i]['car_number'],
+                    date: convert(carList[i]['created_at']),
+                    carType: carList[i]['car_type'],
+                    next: carList[i]['checked'] != 0 ? DummyPage() : CheckScreen(camera: widget.camera, carId: carList[i]['id'])));
+
             list.add(const Height(height: 20,));
           }
         }else{
-          list.add(const Center(child: Text("차량이 존재하지 않습니다."))); // 차량 추가하는 버튼으로 교체한다.
+          list.add(Center(child: Text("차량이 존재하지 않습니다."))); // 차량 추가하는 버튼으로 교체한다.
         }
       });
       return list;
@@ -113,6 +128,8 @@ class _MainScreenState extends State<MainScreen> {
       rethrow;
     }
   }
+
+  // 날짜 수정하자
   String convert(String dt){
     DateFormat format = DateFormat('E, d MMM yyyy HH:mm:ss zzz');
     DateTime dateTime = format.parse(dt);

@@ -7,3 +7,4 @@ flask-cors
 google-cloud
 google
 google-cloud-storage
+python-dotenv

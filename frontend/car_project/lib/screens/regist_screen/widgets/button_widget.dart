@@ -1,16 +1,18 @@
 
 import 'package:car_project/screens/check_screen/check_screen.dart';
+import 'package:car_project/screens/regist_screen/api/regist.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 
 class ButtonWidget extends StatelessWidget{
-  int? car_id;
   final CameraDescription? camera;
+  final VoidCallback onPressed;
 
   ButtonWidget({
     Key? key,
-    required this.camera
+    required this.camera,
+    required this.onPressed,
   }): super(key: key);
 
 
@@ -20,9 +22,7 @@ class ButtonWidget extends StatelessWidget{
       width: 400,
       height: 60,
       child: ElevatedButton(
-        onPressed: (){
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CheckScreen(camera: camera)));
-        },
+        onPressed: onPressed,
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(const Color.fromARGB(88, 88, 88, 100)),
             fixedSize: MaterialStateProperty.all<Size>(Size(MediaQuery.of(context).size.width, 60)),

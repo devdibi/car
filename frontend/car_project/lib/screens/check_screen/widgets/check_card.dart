@@ -9,12 +9,18 @@ class CheckCard extends StatelessWidget{
   final CameraDescription? camera;
   final String part;
   final int partNum;
+  final int status;
+  final String carType;
+  final int section;
 
   CheckCard({
     Key? key,
     required this.part,
     required this.partNum,
     required this.camera,
+    required this.status,
+    required this.carType,
+    required this.section
   }): super(key: key);
 
   @override
@@ -22,7 +28,7 @@ class CheckCard extends StatelessWidget{
     return Container(
       width: 500,
       height: 300,
-      padding: EdgeInsets.fromLTRB(20, 20, 20, 30),
+      padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
       decoration: BoxDecoration(
         color: Color.fromRGBO(200, 200, 200, 100),
         borderRadius: BorderRadius.all(Radius.circular(20))
@@ -32,7 +38,7 @@ class CheckCard extends StatelessWidget{
           // image set
           Container(
             height: 150,
-            child: Image.asset("assets/images/car/EV9/common ($partNum).png"),
+            child: Image.asset("assets/images/car/$carType/common ($partNum).png"),
           ),
           // info set
           Expanded(
@@ -47,17 +53,12 @@ class CheckCard extends StatelessWidget{
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("$part", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                          Text("손상 정보")
+                          Text("crack_info")
                         ],
                       )
                     ),
                   ),
-                  // alert
-                  Container(
-                    width: 50,
-                    alignment: Alignment.topRight,
-                    child: Icon(Icons.warning_amber),
-                  )
+                  status == 0 ? Container(width: 50, alignment: Alignment.topRight, child: Icon(Icons.question_mark),) : status == 1 ? Container(width: 50, alignment: Alignment.topRight, child: Icon(Icons.check),) : Container(width: 50, alignment: Alignment.topRight, child: Icon(Icons.warning_amber),)
                 ],
               ),
             ),
@@ -66,10 +67,9 @@ class CheckCard extends StatelessWidget{
           Container(
             child: TextButton(
               onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => CameraScreen(camera: camera)));
-                // Navigator.pushNamed(context, '/camera');
+                Navigator.push(context, MaterialPageRoute(builder: (context) => CameraScreen(camera: camera, section: section,)));
               },
-              child: Text("검사하기"),
+              child: Text("검사하기", style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),),
             ),
           )
         ],

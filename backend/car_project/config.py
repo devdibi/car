@@ -1,4 +1,7 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # GOOGLE_APPLICATION_CREDENTIALS 파일의 경로 설정
 filename = os.getenv("FILENAME")

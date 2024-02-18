@@ -5,8 +5,8 @@ from app import db
 class Crack(db.Model):
     __tablename__ = 'crack'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    section_id = db.Column(db.Integer, db.ForeignKey('section.id'))
-    degree = db.Column(db.Integer)
+    section_id = db.Column(db.Integer, db.ForeignKey('section.id'), nullable=False)
+    degree = db.Column(db.Integer, nullable=False)
     # 구역의 좌표 정보 => 순서로 진행
     lt = db.Column(db.Integer)  # 왼쪽 상단
     lb = db.Column(db.Integer)  # 왼쪽 하단

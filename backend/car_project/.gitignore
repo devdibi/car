@@ -1,2 +1,4 @@
 __pycache__
 .env
+.non/
+.DS_Store

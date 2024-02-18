@@ -6,10 +6,12 @@ import 'package:camera/camera.dart';
 
 class CameraWidget extends StatefulWidget{
   final CameraDescription? camera; // camera description
+  final int section;
 
   CameraWidget({
     Key? key,
-    required this.camera
+    required this.camera,
+    required this.section
   }): super(key: key);
 
   @override
@@ -46,55 +48,31 @@ class _CameraWidgetState extends State<CameraWidget>{
             builder: (context, snapshot){
               if(snapshot.connectionState == ConnectionState.done){
                 // 상태가 완료인 경우
-                return Row(
+                return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     // crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                        padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                        width: 70,
-                        alignment: Alignment.topCenter,
-                        child: IconButton(
-                          icon: Icon(Icons.arrow_back_outlined),
-                          onPressed: (){
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
                       CameraPreview(_controller), // 이미지 미리보기 제공
-                      SizedBox(width: 50,),
-                      Container(
-                        height: MediaQuery.of(context).size.width,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Center(
-                                child: ElevatedButton(
-                                    style: ButtonStyle(
-                                      fixedSize: MaterialStateProperty.all(Size(50,50)),
-                                      padding: MaterialStateProperty.all(EdgeInsets.zero)
-                                    ),
-                                    child: Icon(Icons.camera_alt),
-                                    onPressed: () async {
-                                      try{
+                      SizedBox(height: 50,),
+                      ElevatedButton(
+                          style: ButtonStyle(
+                              fixedSize: MaterialStateProperty.all(Size(50,50)),
+                              padding: MaterialStateProperty.all(EdgeInsets.zero)
+                          ),
+                          child: Icon(Icons.camera_alt),
+                          onPressed: () async {
+                            try{
 
-                                        await _initializeControllerFuture;
+                              await _initializeControllerFuture;
 
-                                        final image = await _controller.takePicture(); // 촬영 이미지 저장
+                              final image = await _controller.takePicture(); // 촬영 이미지 저장
 
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => PreviewScreen(imagePath: image.path, camera: widget.camera,))); // 미리보기 페이지 이동
-                                      }catch (e){
-                                        print("사진 촬영 오류 : $e"); // 에러 메시지 출력
-                                      }
-                                    }
-                                ),
-                              )
-                            ),
-                          ],
-                        )
-                      )
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => PreviewScreen(imagePath: image.path, camera: widget.camera, section: widget.section))); // 미리보기 페이지 이동
+                            }catch (e){
+                              print("사진 촬영 오류 : $e"); // 에러 메시지 출력
+                            }
+                          }
+                      ),
                     ],
                   );
               }else{

@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+#  permission_handler:
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -43,6 +44,7 @@ dev_dependencies:
   intl:
   provider:
   camera:
+  permission_handler:
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
