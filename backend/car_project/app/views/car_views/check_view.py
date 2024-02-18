@@ -1,7 +1,7 @@
 # 차량 검사 view
 
 from flask import jsonify, Blueprint, request
-from google.cloud import storage
+from google.cloud import storage, aiplatform
 import os
 
 from app.models.section_model import Section
@@ -35,7 +35,7 @@ def save_DB():
     bucket_name = os.environ.get('BUCKET_NAME')
     bucket = client.bucket(bucket_name)
 
-    # 이미지 url 가져오기
+    # 이미지 url 가져오기 (아마 프론트엔드가 json으로 image_url를 주겠죠?)
     image_url = request.json.get('image_url')
 
     # SQLAlchemy를 사용하여 이미지 URL을 데이터베이스에 저장
@@ -44,10 +44,7 @@ def save_DB():
     db.session.commit()
 
 
-# 경로를 ai 모델에게 보내기
-# ai 모델에게 받은 응답 DB 저장
-from google.cloud import aiplatform
-
+# 경로를 ai 모델에게 보내고 응답 DB저장
 def get_results_from_ai_model():
     # 데이터베이스에서 이미지 URL을 가져오기
     sections = Section.query.all()
@@ -55,11 +52,11 @@ def get_results_from_ai_model():
 
     # AI 모델 엔드포인트 초기화
     endpoint = 'projects/{}/locations/{}/endpoints/{}'.format(
-        'your-project-id',
-        'endpoint-region',
-        'endpoint-id'
+        project_id,
+        endpoint_region,
+        endpoint_id
     )
-    client_options = {'api_endpoint': 'ai_endpoint_api'}
+    client_options = {'api_endpoint': 'endpoint_api'}
     prediction_client = aiplatform.gapic.PredictionServiceClient(client_options=client_options)
 
     # 가져온 이미지 URL을 AI 모델에 전달하고 결과를 받기

@@ -10,6 +10,12 @@ GOOGLE_APPLICATION_CREDENTIALS = os.path.join(os.path.dirname(__file__), filenam
 # Google 클라우드 버킷 이름 설정
 BUCKET_NAME = os.getenv("name")
 
+# AI 모델 관련 설정
+project_id = os.getenv("PROJECT_ID")
+endpoint_region = os.getenv("ENDPOINT_ID")
+endpoint_id = os.getenv("REGION")
+endpoint_api = os.getenv("ENDPOINT_API")
+
 # SQLAlchemy 설정 및 기타 설정
 
 DB_USER = os.getenv("DB_USER")
