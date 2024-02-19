@@ -11,9 +11,6 @@ import json
 
 bp = Blueprint('carTest_Save', __name__, url_prefix='/check')
 
-# route = /create
-# 완성이 되지 않으면 => 대시보드가 아닌 체크 페이지로 다시 넘어갈 수 있도록 (아직 구현 안됌)
-
 @bp.route('/create', methods=['POST'])
 def create_car():
     # POST 요청에서 데이터 가져오기
@@ -30,10 +27,6 @@ def create_car():
     db.session.commit()
 
     return jsonify({'message': 'Car created successfully'}), 201
-
-# route = /list
-# 현재 차량의 검사 현황 리스트를 조회
-
 
 @bp.route('/save', methods=['POST'])
 def save_car_info():

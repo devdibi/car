@@ -45,19 +45,18 @@ def save_DB():
 
 
 # 경로를 ai 모델에게 보내고 응답 DB저장
-def get_results_from_ai_model():
-    # 데이터베이스에서 이미지 URL을 가져오기
-    sections = Section.query.all()
+def save_db():
+    # 데이터베이스에서 이미지 URL을 가져오기 (image_path가 null이 아닌 경우만)
+    sections = Section.query.filter(Section.image_path != None).all()
+
+    # 가져온 섹션 객체들에서 이미지 URL만 추출
     image_urls = [section.image_path for section in sections]
 
     # AI 모델 엔드포인트 초기화
-    endpoint = 'projects/{}/locations/{}/endpoints/{}'.format(
-        project_id,
-        endpoint_region,
-        endpoint_id
+    prediction_client = aiplatform.gapic.PredictionServiceClient(
+        client_options={"api_endpoint": f"{endpoint_region}-aiplatform.googleapis.com"}
     )
-    client_options = {'api_endpoint': 'endpoint_api'}
-    prediction_client = aiplatform.gapic.PredictionServiceClient(client_options=client_options)
+    endpoint = f"projects/{project_id}/locations/{endpoint_region}/endpoints/{endpoint_id}"
 
     # 가져온 이미지 URL을 AI 모델에 전달하고 결과를 받기
     results = []
