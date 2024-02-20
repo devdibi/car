@@ -1,7 +1,6 @@
 # 차량 검사 view
 
 from flask import jsonify, Blueprint, request
-from google.cloud import storage, aiplatform
 import os
 
 from app.models.section_model import Section
