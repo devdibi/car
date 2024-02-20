@@ -94,3 +94,21 @@ def get_car_detail(car_id):
         return Response(200, "차량 검사가 완료 되지 않았습니다.", car_detail).json(), 200
 
     return Response(200, "차량의 상세 정보를 성공적으로 조회했습니다.", car_detail).json(), 200
+
+
+
+@bp.route('/complete', methods=['PATCH'])
+def complete():
+    car_id = request.json.get('car_id')
+
+    # 해당하는 레코드 찾기
+    car = db.session.query(Car).filter_by(id=car_id).first()
+
+    if car:
+        # 이미지 URL 업데이트
+        car.checked = 1
+
+        db.session.commit()
+        return "이미지 URL이 업데이트되었습니다."
+    else:
+        return "해당하는 레코드를 찾을 수 없습니다."

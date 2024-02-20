@@ -24,24 +24,46 @@ def get_car_list(car_id):
     return jsonify(response)
 
 # 이미지 url 받고 DB 저장
-@bp.route('/DB',methods=['POST'])
+@bp.route('/DB',methods=['PATCH'])
 def save_DB():
-
-    # Google 서비스 계정 키 파일의 경로 가져오기
-    credentials_path = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
-    # 클라이언트 생성
-    client = storage.Client.from_service_account_json(credentials_path)
-    # 버킷 설정
-    bucket_name = os.environ.get('BUCKET_NAME')
-    bucket = client.bucket(bucket_name)
-
-    # 이미지 url 가져오기 (아마 프론트엔드가 json으로 image_url를 주겠죠?)
+    car_id = request.json.get('car_id')
+    section = request.json.get('section')
     image_url = request.json.get('image_url')
+    check_value = request.json.get('check_value')
 
-    # SQLAlchemy를 사용하여 이미지 URL을 데이터베이스에 저장
-    new_section = Section(image_path=image_url)
-    db.session.add(new_section)
-    db.session.commit()
+    # 해당하는 레코드 찾기
+    car_to_update = db.session.query(Section).filter_by(car_id=car_id, section=section).first()
+
+
+    if car_to_update:
+      # 이미지 URL 업데이트
+        car_to_update.image_path = image_url
+        car_to_update.checked = check_value
+
+        db.session.commit()
+
+        return "이미지 URL이 업데이트되었습니다."
+    else:
+        return "해당하는 레코드를 찾을 수 없습니다."
+
+# 차랑 정보 저장
+@bp.route('/save', methods =['PATCH'])
+def save():
+    car_id = request.json.get('car_id')
+    section = request.json.get('section')
+    check_value = request.json.get('check_value')
+
+    # 해당하는 레코드 찾기
+    car_to_update = db.session.query(Section).filter_by(car_id=car_id, section=section).first()
+
+    if car_to_update:
+        # 이미지 URL 업데이트
+        car_to_update.checked = check_value
+
+        db.session.commit()
+        return "상태가 변경되었습니다.."
+    else:
+        return "해당하는 레코드를 찾을 수 없습니다."
 
 
 # 경로를 ai 모델에게 보내고 응답 DB저장

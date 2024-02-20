@@ -8,8 +8,10 @@ class Crack(db.Model):
     section_id = db.Column(db.Integer, db.ForeignKey('section.id'), nullable=False)
     degree = db.Column(db.Integer, nullable=False)
     # 구역의 좌표 정보 => 순서로 진행
-    lt = db.Column(db.Integer)  # 왼쪽 상단
-    lb = db.Column(db.Integer)  # 왼쪽 하단
-    rb = db.Column(db.Integer)  # 오른쪽 하단
-    rt = db.Column(db.Integer)  # 오른쪽 상단
+    +    lt = db.Column(db.String(45))  # 왼쪽 상단
+    +    lb = db.Column(db.String(45))  # 왼쪽 하단
+    +    rb = db.Column(db.String(45))  # 오른쪽 하단
+    +    rt = db.Column(db.String(45))  # 오른쪽 상단
+    +    confidence = db.Column(db.Double)  # 신뢰도
+
 
