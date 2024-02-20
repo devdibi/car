@@ -6,19 +6,24 @@ import base64
 from app.models.crack_model import Crack
 
 from app import db
+from dotenv import load_dotenv
 
-bp = Blueprint('imageDetection', __name__, url_prefix='car')
-@bp.route('/imageDetection')
+load_dotenv()
+import os
+
+bp = Blueprint('imageDetection', __name__, url_prefix='/car')
+@bp.route('/imageDetection', methods=['GET'])
 def imageDetection():
 
     # Google Cloud Storage 클라이언트 생성
-    storage_client = storage.Client(project=["PROJECT"])
+    storage_client = storage.Client(project=os.getenv("PROJECT_ID"))
 
     # 버킷 객체 생성
-    bucket = storage_client.bucket(["BUCKET_NAME"])
+    bucket = storage_client.bucket(os.getenv("BUCKET_NAME"))
+
 
     # 폴더 안에 있는 파일들 가져오기
-    blobs = bucket.list_blobs(prefix='["FOLDER1"]/')
+    blobs = bucket.list_blobs(prefix=f"{os.getenv('FOLDER1')}/")
 
     predictions_all = []
     for blob in blobs:
@@ -31,6 +36,7 @@ def imageDetection():
             instance = predict.instance.ImageClassificationPredictionInstance(
                 content=encoded_content,
             ).to_value()
+
             instances = [instance]
 
             # 모델 파라미터 설정
@@ -40,14 +46,13 @@ def imageDetection():
             ).to_value()
 
             # 클라이언트 초기화 및 예측 수행
-            client_options = {"api_endpoint": ["ENDPOINT_API"]}
+            client_options = {"api_endpoint": os.getenv("ENDPOINT_API")}
             client = aiplatform.gapic.PredictionServiceClient(client_options=client_options)
             endpoint = client.endpoint_path(
-                project=["PROJECT"], location=["LOCATION"], endpoint=["ENDPOINT_D=ID_1"]
+                project=os.getenv("PROJECT_ID"), location=os.getenv("LOCATION"), endpoint=os.getenv("ENDPOINT_ID_1")
             )
-            response = client.predict(
-                endpoint=endpoint, instances=instances, parameters=parameters
-            )
+
+            response = client.predict(endpoint=endpoint, instances=instances, parameters=parameters)
 
             # 예측 결과 수집
             predictions = response.predictions
@@ -58,6 +63,7 @@ def imageDetection():
             confidences = predictions_json[0]['confidences']
             display_names = predictions_json[0]['displayNames']
             ids = predictions_json[0]['ids']
+
 
             # 예측 결과를 Crack 모델에 저장
             for idx, bbox in enumerate(bboxes):
@@ -74,7 +80,10 @@ def imageDetection():
                 display_name = display_names[idx]
                 prediction_id = ids[idx]
 
+
                 # Crack 모델에 저장
                 crack = Crack(x_min=x_min, x_max=x_max, y_min=y_min, y_max=y_max, confidence=confidence)
                 db.session.add(crack)
-            db.session.commit()
+                db.session.commit()
+
+    return "hello"

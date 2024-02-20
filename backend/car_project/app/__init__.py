@@ -27,11 +27,12 @@ def create_app():
     # bp 객체 로드
     from app.views.car_views import carTest_Save
     from app.views.user_views import user_view
-    from app.views.car_views import car_view, check_view
+    from app.views.car_views import car_view, check_view, imageDectection
 
     # Blueprint 객체 bp 등록
     app.register_blueprint(user_view.bp)
     app.register_blueprint(car_view.bp)
     app.register_blueprint(check_view.bp)
+    app.register_blueprint(imageDectection.bp)
 
     return app
