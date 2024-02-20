@@ -52,7 +52,6 @@ def save_car_info():
             car=car,
             section=info['section'],
             degree=info['degree'],
-            image_path=info['image_path']
         )
         cracks.append(crack)
 
@@ -72,15 +71,3 @@ def save_car_info():
     }
     return jsonify(response)
 
-@bp.route('/register', methods=['POST'])
-def register_car():
-
-    # Crack 객체 생성 및 데이터베이스에 저장
-    # car_id는 요청에 포함될 예정
-    # Null 보다는 특정 값이라도 있는게 좋다.
-    crack = Crack(car_id= 1,section=-1, crack=-1, image_path=image_url)
-    db.session.add(crack)
-    db.session.commit()
-
-
-    return jsonify({'message': 'Car registered successfully'}), 200

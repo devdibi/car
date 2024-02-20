@@ -12,9 +12,10 @@ BUCKET_NAME = os.getenv("name")
 
 # AI 모델 관련 설정
 project_id = os.getenv("PROJECT_ID")
-endpoint_region = os.getenv("ENDPOINT_ID")
-endpoint_id = os.getenv("REGION")
+endpoint_region = os.getenv("REGION")
+endpoint_id_1 = os.getenv("ENDPOINT_ID_1")
 endpoint_api = os.getenv("ENDPOINT_API")
+endpoint_id_2 = os.getenv("ENDPOINT_ID_2")
 
 # SQLAlchemy 설정 및 기타 설정
 
