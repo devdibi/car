@@ -13,6 +13,6 @@ class Crack(db.Model):
     y_min = db.Column(db.Double)
     y_max = db.Column(db.Double)  
     confidence = db.Column(db.Double)
-    imagePath = db.Column(db.String(45))
+    image_path = db.Column(db.String(255))
 
 
