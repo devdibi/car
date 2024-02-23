@@ -13,8 +13,8 @@ class SelectWidget extends StatefulWidget{
 class _SelectWidgetState extends State<SelectWidget>{
   String? _selectItem;
 
-  List<String> list = ['GENESIS G90', 'HYUNDAI AVENTE', 'HYUNDAI GRANDEUR', 'HYUNDAI IONIQ5', 'HYUNDAI IONIQ6', 'HYUNDAI KONA', 'HYUNDAI SANTAFE', 'HYUNDAI SONATA', 'HYUNDAI TUCSON', 'KIA EV6', 'KIA EV9', 'KIA K3', 'KIA K5', 'KIA K9', 'KIA MORNING', 'KIA NIRO', 'KIA SELTOS', 'KIA SORENTO', 'KIA SPORTAGE'];
-  List<String> valueList = ['G90', 'AVENTE', 'GRANDEUR', 'IONIQ5', 'IONIQ6', 'KONA', 'SANTAFE', 'SONATA', 'TUCSON', 'EV6', 'EV9', 'K3', 'K5', 'K9', 'MORNING', 'NIRO', 'SELTOS', 'SORENTO', 'SPORTAGE'];
+  List<String> list = ['GENESIS G90', 'HYUNDAI AVANTE', 'HYUNDAI GRANDEUR', 'HYUNDAI IONIQ5', 'HYUNDAI IONIQ6', 'HYUNDAI KONA', 'HYUNDAI SANTAFE', 'HYUNDAI SONATA', 'HYUNDAI TUCSON', 'KIA EV6', 'KIA EV9', 'KIA K3', 'KIA K5', 'KIA K9', 'KIA MORNING', 'KIA NIRO', 'KIA SELTOS', 'KIA SORENTO', 'KIA SPORTAGE'];
+  List<String> valueList = ['G90', 'AVANTE', 'GRANDEUR', 'IONIQ5', 'IONIQ6', 'KONA', 'SANTAFE', 'SONATA', 'TUCSON', 'EV6', 'EV9', 'K3', 'K5', 'K9', 'MORNING', 'NIRO', 'SELTOS', 'SORENTO', 'SPORTAGE'];
 
   @override
   Widget build(BuildContext context){

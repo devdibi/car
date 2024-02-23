@@ -42,6 +42,7 @@ class MyApp extends StatelessWidget{
     return ChangeNotifierProvider(
       create: (context) => Setting(),
       child: MaterialApp(
+        title: "차바오",
         home: LogoScreen(camera: camera),
       )
     );

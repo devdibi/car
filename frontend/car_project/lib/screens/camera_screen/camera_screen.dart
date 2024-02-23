@@ -8,11 +8,15 @@ import 'package:camera/camera.dart';
 class CameraScreen extends StatefulWidget{
   final CameraDescription? camera; // camera description
   final int section;
+  final int sectionId;
+  final int carId;
 
   CameraScreen({
     Key? key,
     required this.camera,
     required this.section,
+    required this.sectionId,
+    required this.carId,
   }): super(key: key);
 
   @override
@@ -42,7 +46,7 @@ class _CameraScreenState extends State<CameraScreen>{
           },
         ),
       ),
-      body: CameraWidget(camera: widget.camera, section: widget.section),
+      body: CameraWidget(camera: widget.camera, section: widget.section, sectionId: widget.sectionId ,carId: widget.carId),
     );
   }
 }

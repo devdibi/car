@@ -1,0 +1,66 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:car_project/api_util/url.dart';
+import 'package:car_project/main.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:googleapis_auth/auth_io.dart';
+import 'package:http/http.dart' as http;
+import 'package:googleapis/storage/v1.dart';
+import 'package:flutter/services.dart';
+
+
+Future<String> upload(File imageFile, String save, int carId, int section) async {
+  await dotenv.load(fileName: 'assets/.env');
+  // key 파일 경로
+  final jsonFilePath = dotenv.env['GOOGLE_APPLICATION_CREDENTIALS'];
+
+  // key file
+  String jsonString = await rootBundle.loadString(jsonFilePath!);
+  final key = json.decode(jsonString);
+
+  // auth
+  final credentials = ServiceAccountCredentials.fromJson(key);
+  final httpClient = await clientViaServiceAccount(credentials, [StorageApi.devstorageFullControlScope]);
+  final storage = StorageApi(httpClient);
+
+  // storage
+  final bucketName = dotenv.env['BUCKET_NAME'];
+
+  final fileContent = await imageFile.readAsBytes();
+
+  try{
+    storage.objects.delete(bucketName!,save);
+  }finally{
+    Object  response = await storage.objects.insert(
+      Object(
+          bucket: bucketName,
+          name: save
+      ), bucketName!,
+      uploadMedia: Media(
+        http.ByteStream.fromBytes(fileContent),
+        imageFile.lengthSync(),
+      ),
+    );
+
+    var link = response.toJson()['mediaLink'];
+
+    print(link);
+
+    try{
+      var url = Uri.parse('${URI()}/check/DB'); // PATCH로 변경
+
+      var request = {'image_url': link, 'car_id': carId,'section': section, 'check_value': 0}; // 미검사 상태로 변환
+
+      var response = await http.patch(
+        url, body: json.encode(request), headers: {'Content-type': 'application/json'},
+      );
+
+      print(response);
+    }catch(e){
+      // print(e);
+    }
+    httpClient.close();
+    return link;
+  }
+}

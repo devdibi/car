@@ -1,17 +1,24 @@
 
-import 'package:car_project/common_widgets/space_height.dart';
+
+import 'dart:io';
+
 import 'package:car_project/screens/preview_screen/preview_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter/services.dart';
 
 class CameraWidget extends StatefulWidget{
   final CameraDescription? camera; // camera description
   final int section;
+  final int sectionId;
+  final int carId;
 
   CameraWidget({
     Key? key,
     required this.camera,
-    required this.section
+    required this.section,
+    required this.sectionId,
+    required this.carId
   }): super(key: key);
 
   @override
@@ -29,7 +36,7 @@ class _CameraWidgetState extends State<CameraWidget>{
 
     _controller = CameraController(
         widget.camera!, // camera widget
-        ResolutionPreset.medium // start resolution
+        ResolutionPreset.medium, // start resolution
     );
 
     _initializeControllerFuture = _controller.initialize(); // camre init
@@ -52,7 +59,15 @@ class _CameraWidgetState extends State<CameraWidget>{
                     mainAxisAlignment: MainAxisAlignment.start,
                     // crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      CameraPreview(_controller), // 이미지 미리보기 제공
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height*0.75,
+                        child: AspectRatio(
+                          aspectRatio: 3 / 4, // 가로 세로 비율을 여기에 설정합니다.
+                          child: CameraPreview(_controller),
+                        ),
+                      ),
+
                       SizedBox(height: 50,),
                       ElevatedButton(
                           style: ButtonStyle(
@@ -65,9 +80,11 @@ class _CameraWidgetState extends State<CameraWidget>{
 
                               await _initializeControllerFuture;
 
-                              final image = await _controller.takePicture(); // 촬영 이미지 저장
+                              XFile image = await _controller.takePicture(); // 촬영 이미지 저장
 
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => PreviewScreen(imagePath: image.path, camera: widget.camera, section: widget.section))); // 미리보기 페이지 이동
+                              File file = File(image.path);
+
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => PreviewScreen(image: file, imagePath: image.path, camera: widget.camera, section: widget.section, sectionId: widget.sectionId ,carId: widget.carId))); // 미리보기 페이지 이동
                             }catch (e){
                               print("사진 촬영 오류 : $e"); // 에러 메시지 출력
                             }
@@ -81,4 +98,18 @@ class _CameraWidgetState extends State<CameraWidget>{
             },
       );
   }
+
+  // static const MethodChannel _channel = MethodChannel('native_bridge');
+  //
+  // Future<void> callNativeMethod() async {
+  //   try {
+  //     if (Platform.isAndroid) {
+  //       await _channel.invokeMethod('MainActivity');
+  //     } else if (Platform.isIOS) {
+  //       await _channel.invokeMethod('ViewController');
+  //     }
+  //   } on PlatformException catch (e) {
+  //     print("Failed to call native method: '${e.message}'.");
+  //   }
+  // }
 }
