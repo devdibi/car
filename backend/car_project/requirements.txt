@@ -9,3 +9,4 @@ google
 google-cloud-storage
 python-dotenv
 google-cloud-aiplatform
+pillow

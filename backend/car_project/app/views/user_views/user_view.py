@@ -1,3 +1,8 @@
+'''
+
+
+'''
+
 from flask import Flask, request, jsonify, Blueprint  # flask package
 from app.models.user_model import User #  user_model
 from app.response.response import Response  # 사용자 정의 응답
@@ -42,3 +47,5 @@ def signup():
     db.session.commit()
 
     return Response(200, "회원가입이 성공적으로 완료되었습니다.", None).json(), 200
+
+# 유저 관련 기능 추가해보자
