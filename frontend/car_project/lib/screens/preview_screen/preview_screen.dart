@@ -36,7 +36,7 @@ class PreviewScreen extends StatefulWidget{
 
 class _PreviewScreenState extends State<PreviewScreen>{
   bool _isUploading = false;
-
+  bool _isLoading = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -57,10 +57,6 @@ class _PreviewScreenState extends State<PreviewScreen>{
                 Container(
                   width: MediaQuery.of(context).size.width,
                   child: Image.network(widget.imagePath!,),
-                  // child: AspectRatio(
-                  //     aspectRatio: 4 / 3, // 가로 세로 비율을 여기에 설정합니다.
-                  //     child: kIsWeb ? Image.network(widget.imagePath!, fit: BoxFit.fitWidth,) : Image.network(widget.imagePath!, fit: BoxFit.fitWidth,)
-                  //   ),
                 ),
                 Height(height: 100),
                 Row(

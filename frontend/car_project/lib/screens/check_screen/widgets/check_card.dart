@@ -1,32 +1,30 @@
-
-
 import 'package:car_project/screens/camera_screen/camera_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 
 class CheckCard extends StatelessWidget{
+  
+  final List<Widget> info;
   final CameraDescription? camera;
   final String part;
-  final int partNum;
+  final int direction;
   final int status;
   final String carType;
   final int section;
   final int sectionId;
   final int carId;
-  // final List<Widget> cracks;
 
   CheckCard({
     Key? key,
     required this.part,
-    required this.partNum,
+    required this.direction,
     required this.camera,
     required this.status,
     required this.carType,
     required this.section,
     required this.sectionId,
     required this.carId,
-    // required this.cracks
+    required this.info,
   }): super(key: key);
 
   @override
@@ -44,7 +42,7 @@ class CheckCard extends StatelessWidget{
           // image set
           Container(
             height: 150,
-            child: Image.asset("assets/images/car/$carType/common ($partNum).png",),
+            child: Image.asset("assets/images/car/$carType/common ($direction).png",),
           ),
           Container(height: 1, color: Colors.black,),
           // info set
@@ -61,13 +59,14 @@ class CheckCard extends StatelessWidget{
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("$part", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
-                          Text("3개의 손상이 있습니다.")
+                          if(info.isNotEmpty) for(int i = 0; i < info.length; i++) info[i]
+                          else if(status != 0) Text("손상이 없습니다.")
                           // cracks != null && cracks.isNotEmpty ? Column(children: cracks) : Text("손상이 없습니다.")
                         ],
                       )
                     ),
                   ),
-                  status == 0 ? Container() : status == 1 ? Container(width: 50, alignment: Alignment.topRight, child: Icon(Icons.check, color: Colors.green,),) : Container(width: 50, alignment: Alignment.topRight, child: Icon(Icons.warning_amber, color: Colors.red),)
+                  status == 0 ? Container() : info.isEmpty ? Container(width: 50, alignment: Alignment.topRight, child: Icon(Icons.check, color: Colors.green,),) : Container(width: 50, alignment: Alignment.topRight, child: Icon(Icons.warning_amber, color: Colors.red),)
                 ],
               ),
             ),
@@ -93,25 +92,4 @@ class CheckCard extends StatelessWidget{
       ),
     );
   }
-
 }
-
-// ElevatedButton(
-// style: ButtonStyle(
-// backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(0, 20, 230, 100)),
-// side: MaterialStateProperty.all<BorderSide>(const BorderSide(color: Colors.white)),
-// fixedSize: MaterialStateProperty.all(Size.fromHeight(60)),
-// shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
-// elevation: MaterialStateProperty.all(2)
-// ),
-// onPressed: (){
-// Navigator.push(context, MaterialPageRoute(builder: (context) => CameraScreen(camera: camera, section: section, carId: carId,)));
-// },
-// child: Row(
-// mainAxisAlignment: MainAxisAlignment.center,
-// children: [
-// Container(height: 30, alignment: Alignment.center,child: Text( status == 0 ? "검사하기" : "다시 검사하기", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),),
-// Container(height: 30, alignment: Alignment.topCenter,child: Icon(Icons.touch_app, color: Colors.white,),)
-// ],
-// )
-// ),

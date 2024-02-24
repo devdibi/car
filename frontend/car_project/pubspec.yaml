@@ -100,13 +100,10 @@ flutter:
     - assets/images/car/ETC/
     - assets/images/
     - assets/.env
-    - assets/storage-key.json
     - assets/
-    - assets/images/click.png
     - assets/images/chabao.png
     - assets/images/chabao_before.png
     - assets/images/icon.png
-    - assets/images/im.png
 
   # To add assets to your application, add an assets section, like this:
   #   - images/a_dot_burr.jpeg

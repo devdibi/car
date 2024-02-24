@@ -47,7 +47,7 @@ class _LogoScreenState extends State<LogoScreen> with SingleTickerProviderStateM
   }
 
   void _startTextAnimation() {
-    Timer.periodic(Duration(milliseconds: 500), (timer) {
+    Timer.periodic(Duration(milliseconds: 200), (timer) {
       setState(() {
         if (_currentIndex < 'CHABAO'.length) {
           _textToShow = 'CHABAO'.substring(0, _currentIndex + 1);
@@ -81,7 +81,7 @@ class _LogoScreenState extends State<LogoScreen> with SingleTickerProviderStateM
     final setting = Provider.of<Setting>(context);
 
     // 설정한 시간동안 보여주고 다음 페이지로 이동, 다른 페이지의 로딩을 자연스럽게 하기 위해 추가함
-    Timer(const Duration(seconds: 10), () {
+    Timer(const Duration(seconds: 6), () {
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginScreen(camera: widget.camera,)));
     });
   }

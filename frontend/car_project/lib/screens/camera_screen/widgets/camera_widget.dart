@@ -98,18 +98,4 @@ class _CameraWidgetState extends State<CameraWidget>{
             },
       );
   }
-
-  // static const MethodChannel _channel = MethodChannel('native_bridge');
-  //
-  // Future<void> callNativeMethod() async {
-  //   try {
-  //     if (Platform.isAndroid) {
-  //       await _channel.invokeMethod('MainActivity');
-  //     } else if (Platform.isIOS) {
-  //       await _channel.invokeMethod('ViewController');
-  //     }
-  //   } on PlatformException catch (e) {
-  //     print("Failed to call native method: '${e.message}'.");
-  //   }
-  // }
 }
