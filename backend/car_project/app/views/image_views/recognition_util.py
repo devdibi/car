@@ -109,7 +109,7 @@ def image_detection(car_section):
 
             # 모델 파라미터 설정
             parameters = predict.params.ImageClassificationPredictionParams(
-                confidence_threshold=0.5,
+
                 max_predictions=10
             ).to_value()
 

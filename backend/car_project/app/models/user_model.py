@@ -10,3 +10,4 @@ class User(db.Model):
     password = db.Column(db.String(120), nullable=False)
     name = db.Column(db.String(80), nullable=False)
     cars = db.relationship('Car', backref='user', lazy=True)
+    role = db.Column(db.Integer, nullable=False)
