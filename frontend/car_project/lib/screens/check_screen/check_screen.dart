@@ -7,16 +7,13 @@ import 'package:car_project/screens/check_screen/api/complete.dart';
 import 'package:car_project/screens/check_screen/widgets/check_card.dart';
 import 'package:car_project/screens/main_screen/main_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
 import 'package:http/http.dart' as http;
 
 class CheckScreen extends StatefulWidget{
-  final CameraDescription? camera;
   final int? carId;
 
   CheckScreen({
     Key? key,
-    required this.camera,
     required this.carId,
   }): super(key: key);
 
@@ -44,7 +41,7 @@ class _CheckScreenState extends State<CheckScreen>{
       appBar: AppBar(
         title: const Text('점검 목록', style: TextStyle(fontSize: 24),),
         toolbarHeight: 60,
-        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () {Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen(camera: widget.camera,)));},),
+        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () {Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));},),
       ),
       body: Container(
           padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
@@ -123,7 +120,7 @@ class _CheckScreenState extends State<CheckScreen>{
       for(int index = 0; index < 8; index++){
         if(index % 2 == 0){
           int i = index ~/ 2;
-          list.add(CheckCard(part: part[i], direction: direction[i], camera: widget.camera, status: status[i], carType: carType!, sectionId: data['crack_list'][i]['section_id'], section: i, carId: widget.carId!, info: cracks[i],));
+          list.add(CheckCard(part: part[i], direction: direction[i], status: status[i], carType: carType!, sectionId: data['crack_list'][i]['section_id'], section: i, carId: widget.carId!, info: cracks[i],));
         }else{
           list.add(Height(height: 20));
         }
@@ -134,7 +131,7 @@ class _CheckScreenState extends State<CheckScreen>{
             ElevatedButton(
               onPressed: () async{
                 await complete(widget.carId!);
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen(camera: widget.camera)));
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
               },
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(const Color.fromARGB(88, 88, 88, 100)),

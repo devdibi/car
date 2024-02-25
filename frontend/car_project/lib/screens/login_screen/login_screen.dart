@@ -9,16 +9,13 @@ import 'package:car_project/screens/login_screen/widgets/logo.dart';
 import 'package:car_project/screens/main_screen/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:camera/camera.dart';
 
 import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget{
-  final CameraDescription? camera;
 
   LoginScreen({
     Key? key,
-    required this.camera
   }): super(key: key);
 
   @override
@@ -148,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen>{
       if(responseData['data'] != null){
         // provider에 유저 정보 추가
         setting.setUser(UserData(id: responseData['data']['id'], email: responseData['data']['email'], name: responseData['data']['name']));
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen(camera: widget.camera)));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
       }else{
         setState(() => wrongAccount = true);
       }

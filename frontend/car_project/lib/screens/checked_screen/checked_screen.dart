@@ -1,14 +1,11 @@
-
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:car_project/common/url.dart';
 import 'package:car_project/common/height.dart';
 import 'package:car_project/common_widgets/common_box.dart';
 import 'package:car_project/screens/check_screen/check_screen.dart';
 import 'package:car_project/screens/checked_screen/api/save.dart';
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -17,19 +14,16 @@ class CheckedScreen extends StatefulWidget{
   @override
   _CheckedScreenState createState() => _CheckedScreenState();
 
-
   double pWidth = 0;
   double pHeight = 0;
 
   String? link;
-  final CameraDescription? camera;
   final int section;
   final int sectionId;
   final int carId;
 
   CheckedScreen({
     Key? key,
-    required this.camera,
     required this.section,
     required this.sectionId,
     required this.carId
@@ -46,17 +40,19 @@ class _CheckedScreenState extends State<CheckedScreen>{
   @override
   void initState() {
     super.initState();
+    carDetail(context);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    carDetail(context);
-
   }
 
   @override
   Widget build(BuildContext context){
+    widget.pHeight = MediaQuery.of(context).size.height * 0.4;
+    widget.pWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(automaticallyImplyLeading:false),
       body: _isLoading ? Container(
@@ -124,7 +120,7 @@ class _CheckedScreenState extends State<CheckedScreen>{
                     // 손상 값
                     int checkValue = 1;
                     await save(widget.carId, widget.section, checkValue);
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CheckScreen(camera: widget.camera, carId: widget.carId,)));
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CheckScreen(carId: widget.carId,)));
                     },
                     style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(const Color.fromARGB(88, 88, 88, 100)),
@@ -145,9 +141,6 @@ class _CheckedScreenState extends State<CheckedScreen>{
 
 
   Future<void> carDetail(BuildContext context) async{
-    widget.pWidth = MediaQuery.of(context).size.width;
-    widget.pHeight = MediaQuery.of(context).size.height * 0.4;
-
     try{
       var imageUrl = Uri.parse('${URI()}/car/section/${widget.sectionId}');
 
@@ -199,6 +192,7 @@ class _CheckedScreenState extends State<CheckedScreen>{
 
         boxes.add(box);
       }
+      print(boxes);
 
       List<Widget> tempList = [];
 
@@ -305,9 +299,10 @@ class _CheckedScreenState extends State<CheckedScreen>{
         info = tempList;
         total = count;
         bound = boxes;
+        _isLoading = true;
       });
 
-      _isLoading = true;
+
       print(data);
     }catch(e){
       print(e);

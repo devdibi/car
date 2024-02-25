@@ -16,15 +16,11 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:camera/camera.dart';
-import 'dart:io';
 
 class MainScreen extends StatefulWidget{
-  final CameraDescription? camera;
 
   MainScreen({
     Key? key,
-    required this.camera
   }): super(key: key);
 
   @override
@@ -73,7 +69,7 @@ class _MainScreenState extends State<MainScreen> {
                 },
               ): Center(child: Text("차량이 존재하지 않습니다.")),
               Positioned(right: 10, bottom: 50,
-                child: ElevatedButton(onPressed: () {Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RegistScreen(camera: widget.camera,)));},
+                child: ElevatedButton(onPressed: () {Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RegistScreen()));},
                     style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(88, 88, 88, 100))), // 생성 페이지로 이동
                     child: Container(height: 80, width: 30, padding: EdgeInsets.zero, child: const Center(child: Text("+", style: TextStyle(fontSize: 50, color: Colors.white),),),)
                 ),
@@ -113,7 +109,7 @@ class _MainScreenState extends State<MainScreen> {
               MainSelect(carNumber: carList[0]['car_number'],
                   date: convert(carList[0]['created_at']),
                   carType: carList[0]['car_type'],
-                  next: carList[0]['checked'] != 0 ? BoardScreen(carId : carList[0]['id']) : CheckScreen(camera: widget.camera, carId: carList[0]['id'])));
+                  next: carList[0]['checked'] != 0 ? BoardScreen(carId : carList[0]['id']) : CheckScreen(carId: carList[0]['id'])));
 
           list.add(const Height(height: 20,));
 
@@ -122,7 +118,7 @@ class _MainScreenState extends State<MainScreen> {
                 MainCard(carNumber: carList[i]['car_number'],
                     date: convert(carList[i]['created_at']),
                     carType: carList[i]['car_type'],
-                    next: carList[i]['checked'] != 0 ? BoardScreen(carId : carList[i]['id']) : CheckScreen(camera: widget.camera, carId: carList[i]['id'])));
+                    next: carList[i]['checked'] != 0 ? BoardScreen(carId : carList[i]['id']) : CheckScreen(carId: carList[i]['id'])));
 
             list.add(const Height(height: 20,));
           }

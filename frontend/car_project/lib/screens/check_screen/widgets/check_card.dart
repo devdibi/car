@@ -1,11 +1,9 @@
 import 'package:car_project/screens/camera_screen/camera_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
 
 class CheckCard extends StatelessWidget{
   
   final List<Widget> info;
-  final CameraDescription? camera;
   final String part;
   final int direction;
   final int status;
@@ -18,7 +16,6 @@ class CheckCard extends StatelessWidget{
     Key? key,
     required this.part,
     required this.direction,
-    required this.camera,
     required this.status,
     required this.carType,
     required this.section,
@@ -77,7 +74,7 @@ class CheckCard extends StatelessWidget{
             width: 150,
             child: TextButton(
                 onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => CameraScreen(camera: camera, section: section, sectionId: sectionId ,carId: carId,)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => CameraScreen(section: section, sectionId: sectionId ,carId: carId,)));
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

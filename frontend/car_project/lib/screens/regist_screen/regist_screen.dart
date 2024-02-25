@@ -1,4 +1,3 @@
-
 import 'package:car_project/common/height.dart';
 import 'package:car_project/model/car_data.dart';
 import 'package:car_project/screens/check_screen/check_screen.dart';
@@ -9,15 +8,12 @@ import 'package:car_project/screens/regist_screen/widgets/car_widget.dart';
 import 'package:car_project/screens/regist_screen/widgets/input_widget.dart';
 import 'package:car_project/screens/regist_screen/widgets/select_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
 
 
 class RegistScreen extends StatefulWidget{
-  final CameraDescription? camera;
 
   RegistScreen({
     Key? key,
-    required this.camera
   }): super(key: key);
 
   @override
@@ -40,7 +36,7 @@ class _RegistScreenState extends State<RegistScreen>{
       appBar: AppBar(
         title: const Text('차량 등록', style: TextStyle(fontSize: 24),),
         toolbarHeight: 50,
-        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () {Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen(camera: widget.camera,)));},),
+        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () {Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));},),
       ),
       body: SingleChildScrollView(
           child: Container(
@@ -63,7 +59,6 @@ class _RegistScreenState extends State<RegistScreen>{
                   // Expanded(child: SizedBox()),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.1,),
                   ButtonWidget(
-                    camera: widget.camera,
                     onPressed: () async {
                       setState(() {
                         _isUploading = true;
@@ -75,7 +70,7 @@ class _RegistScreenState extends State<RegistScreen>{
                         _isUploading = false;
                       });
 
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CheckScreen(camera: widget.camera, carId: carId,)));
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CheckScreen(carId: carId,)));
                     },)
                 ],
               )
