@@ -1,23 +1,19 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:car_project/common/height.dart';
-import 'package:car_project/main.dart';
 import 'package:car_project/screens/camera_screen/camera_screen.dart';
 import 'package:car_project/screens/checked_screen/checked_screen.dart';
 import 'package:car_project/screens/preview_screen/api/classification.dart';
 import 'package:car_project/screens/preview_screen/api/detection.dart';
 import 'package:car_project/screens/preview_screen/api/upload.dart';
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:provider/provider.dart';
 
-class PreviewScreen extends StatefulWidget{
+class PreviewScreen extends StatefulWidget {
   @override
   _PreviewScreenState createState() => _PreviewScreenState();
 
   File? image;
   String? imagePath;
-  final CameraDescription? camera;
   final int section;
   final int sectionId;
   final int carId;
@@ -25,53 +21,65 @@ class PreviewScreen extends StatefulWidget{
   PreviewScreen({
     Key? key,
     required this.image,
-    required this.imagePath,
-    required this.camera,
     required this.section,
     required this.sectionId,
-    required this.carId
+    required this.carId,
   }) : super(key: key);
-
 }
 
-class _PreviewScreenState extends State<PreviewScreen>{
+class _PreviewScreenState extends State<PreviewScreen> {
   bool _isUploading = false;
-  bool _isLoading = false;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _image();
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
           Container(
+            margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
             padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: Image.network(widget.imagePath!,),
+                widget.imagePath == null
+                    ? Center(child: CircularProgressIndicator())
+                    : CachedNetworkImage(
+                  imageUrl: widget.imagePath!,
+                  placeholder: (context, url) =>
+                      CircularProgressIndicator(),
+                  errorWidget: (context, url, error) =>
+                      Icon(Icons.error),
                 ),
-                Height(height: 100),
+                Height(height: 200),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(width: 20,),
+                    SizedBox(width: 20),
                     Button(() {
                       widget.imagePath = null;
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CameraScreen(camera: widget.camera, section: widget.section, sectionId: widget.sectionId, carId: widget.carId)));
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CameraScreen(
+                            section: widget.section,
+                            sectionId: widget.sectionId,
+                            carId: widget.carId,
+                          ),
+                        ),
+                      );
                     }, "다시 촬영"),
-                    SizedBox(width: 20,),
-                    // 버튼 클릭과 동시에 버킷에 저장
+                    SizedBox(width: 20),
                     Button(() async {
-                      setState(() {_isUploading = true;});
+                      setState(() {
+                        _isUploading = true;
+                      });
 
                       // detection
                       await detection(widget.sectionId, widget.section);
@@ -79,54 +87,64 @@ class _PreviewScreenState extends State<PreviewScreen>{
                       // classification
                       await classification(widget.sectionId, widget.section);
 
-                      setState(() {_isUploading = false;});
+                      setState(() {
+                        _isUploading = false;
+                      });
 
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CheckedScreen(camera: widget.camera, sectionId: widget.sectionId, section : widget.section, carId: widget.carId)));
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CheckedScreen(
+                            sectionId: widget.sectionId,
+                            section: widget.section,
+                            carId: widget.carId,
+                          ),
+                        ),
+                      );
                     }, "검사하기"),
-                    SizedBox(width: 20,),
+                    SizedBox(width: 20),
                   ],
                 )
               ],
-            )
+            ),
           ),
-          _isUploading ? Positioned.fill(
+          _isUploading
+              ? Positioned.fill(
             child: Container(
-              color: Colors.black.withOpacity(0.5), // 어두운 효과
+              color: Colors.black.withOpacity(0.5),
               child: Center(child: CircularProgressIndicator()),
             ),
-          ) : SizedBox(),
+          )
+              : SizedBox(),
         ],
       ),
-
     );
   }
 
-  Widget Button(VoidCallback function, String text){
+  Widget Button(VoidCallback function, String text) {
     return Expanded(
-        child: ElevatedButton(
+      child: ElevatedButton(
         onPressed: function,
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(const Color.fromARGB(88, 88, 88, 100)),
-            side: MaterialStateProperty.all<BorderSide>(const BorderSide(color: Colors.white)),
-            fixedSize: MaterialStateProperty.all(Size.fromHeight(60)),
-            shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
-            elevation: MaterialStateProperty.all(2)
-          ),
-        child: Text(text, style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),)
-      )
+        style: ButtonStyle(
+          backgroundColor:
+          MaterialStateProperty.all(const Color.fromARGB(88, 88, 88, 100)),
+          side: MaterialStateProperty.all<BorderSide>(
+              const BorderSide(color: Colors.white)),
+          fixedSize: MaterialStateProperty.all(Size.fromHeight(60)),
+          shape: MaterialStateProperty.all(RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15))),
+          elevation: MaterialStateProperty.all(2),
+        ),
+        child: Text(
+          text,
+          style: TextStyle(
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+      ),
     );
   }
 
-  String filePath(BuildContext context){
-    final provider = Provider.of<Setting>(context, listen: false);
-    var userId = provider.user!.getId();
-
-    String path = 'image/$userId/${widget.carId}/${widget.section}.jpg';
-
-    return path;
-  }
-
-  Future<void> _image() async{
+  Future<void> _image() async {
     String imagePath = await selectFile(widget.image!, widget.sectionId, widget.section);
     setState(() {
       widget.imagePath = imagePath;

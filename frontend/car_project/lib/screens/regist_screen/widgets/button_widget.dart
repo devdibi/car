@@ -1,17 +1,10 @@
-
-import 'package:car_project/screens/check_screen/check_screen.dart';
-import 'package:car_project/screens/regist_screen/api/regist.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
 
 class ButtonWidget extends StatelessWidget{
-  final CameraDescription? camera;
   final VoidCallback onPressed;
 
   ButtonWidget({
     Key? key,
-    required this.camera,
     required this.onPressed,
   }): super(key: key);
 

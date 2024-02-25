@@ -2,30 +2,21 @@ import 'package:car_project/model/user_data.dart';
 import 'package:car_project/screens/logo_screen/logo_screens.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
+import 'package:flutter/services.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // MedeaQuery 사용을 위한 초기화
-  final cameras = await availableCameras(); // 사용가능한 카메라 확인
+  // WidgetsFlutterBinding.ensureInitialized()을 호출하여 위젯 바인딩 초기화
+  WidgetsFlutterBinding.ensureInitialized();
 
-  CameraDescription? firstCamera; // 카메라 설정
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
-  if(cameras.isNotEmpty){
-    firstCamera = cameras[0];
-  }else{
-    print("사용가능한 카메라가 없습니다.");
-  }
-
-  runApp(MyApp(camera: firstCamera,));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget{
-  final CameraDescription? camera;
-
-  MyApp({
-    Key? key,
-    required this.camera
-  }) : super(key: key);
 
   @override
   Widget build(BuildContext context){
@@ -33,7 +24,7 @@ class MyApp extends StatelessWidget{
       create: (context) => Setting(),
       child: MaterialApp(
         title: "차바오",
-        home: LogoScreen(camera: camera),
+        home: LogoScreen(),
       )
     );
   }
