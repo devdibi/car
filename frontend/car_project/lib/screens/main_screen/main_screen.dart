@@ -10,7 +10,6 @@ import 'package:car_project/screens/check_screen/check_screen.dart';
 import 'package:car_project/screens/main_screen/widgets/main_card.dart';
 import 'package:car_project/screens/main_screen/widgets/main_select.dart';
 import 'package:car_project/screens/regist_screen/regist_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
@@ -30,6 +29,7 @@ class MainScreen extends StatefulWidget{
 class _MainScreenState extends State<MainScreen> {
   Future<List<Widget>>? list; // 초기 요소 미리 설정
 
+  int select = 0;
   int pictureNum = 4; // 각도 조절
   bool _hasCar = false;
   bool _load = false;
@@ -136,10 +136,10 @@ class _MainScreenState extends State<MainScreen> {
 
   // 날짜 수정하자
   String convert(String dt){
-    DateFormat format = DateFormat('E, d MMM yyyy HH:mm:ss zzz');
+    DateFormat format = DateFormat('E, d MMM yyyy HH:mm:ss zzz'); // 입력된 날짜 형식에 맞게 DateFormat 설정
     DateTime dateTime = format.parse(dt);
 
-    DateFormat outputFormat = DateFormat('yyyy-mm-dd');
+    DateFormat outputFormat = DateFormat('yyyy-MM-dd'); // 출력 형식을 'yyyy-MM-dd'로 설정
     String date = outputFormat.format(dateTime);
     return date;
   }

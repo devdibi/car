@@ -158,8 +158,8 @@ class _BoardScreenState extends State<BoardScreen> {
                 width: 400,
                 child: Image.network(path),
               ),
-              if (paintBoxes != null && paintBoxes['$i']!.isNotEmpty)
-                Text("hello")
+              // if (paintBoxes['$i']! != null)
+                // Text("hello")
                 // for (int j = 0; j < paintBoxes['$i']!.length; j++)
                 //   Container(
                 //     height: 300,

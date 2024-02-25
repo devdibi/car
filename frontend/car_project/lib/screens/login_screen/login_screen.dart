@@ -7,6 +7,7 @@ import 'package:car_project/screens/login_screen/widgets/input_text.dart';
 import 'package:car_project/screens/login_screen/widgets/login_button.dart';
 import 'package:car_project/screens/login_screen/widgets/logo.dart';
 import 'package:car_project/screens/main_screen/main_screen.dart';
+import 'package:car_project/screens/signup_screen/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -108,8 +109,12 @@ class _LoginScreenState extends State<LoginScreen>{
 
                             setState(() {_process = false;});
                           }),
+                      TextButton(
+                          onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen()));},
+                          child: Text("아직 회원이 아니신가요?")),
                       if(wrongAccount) const Height(height: 20,),
                       if(wrongAccount) Container(child: const Text("입력된 정보가 올바르지 않습니다.", style: TextStyle(color: Colors.red),),),
+
                     ],
                   )
               ),
