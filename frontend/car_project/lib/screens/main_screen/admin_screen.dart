@@ -16,17 +16,17 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class MainScreen extends StatefulWidget{
+class AdminScreen extends StatefulWidget{
 
-  MainScreen({
+  AdminScreen({
     Key? key,
   }): super(key: key);
 
   @override
-  _MainScreenState createState() => _MainScreenState();
+  _AdminScreenState createState() => _AdminScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _AdminScreenState extends State<AdminScreen> {
   Future<List<Widget>>? list; // 초기 요소 미리 설정
 
   int select = 0;
@@ -105,15 +105,7 @@ class _MainScreenState extends State<MainScreen> {
 
       setState(() {
         if(carList.isNotEmpty){
-          list.add(
-              MainSelect(carNumber: carList[0]['car_number'],
-                  date: convert(carList[0]['created_at']),
-                  carType: carList[0]['car_type'],
-                  next: carList[0]['checked'] != 0 ? BoardScreen(carId : carList[0]['id']) : CheckScreen(carId: carList[0]['id'])));
-
-          list.add(const Height(height: 20,));
-
-          for(int i = 1; i < carList.length; i++){
+          for(int i = 0; i < carList.length; i++){
             list.add(
                 MainCard(carNumber: carList[i]['car_number'],
                     date: convert(carList[i]['created_at']),

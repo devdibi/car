@@ -3,9 +3,11 @@ import 'package:car_project/common/url.dart';
 import 'package:car_project/common/height.dart';
 import 'package:car_project/main.dart';
 import 'package:car_project/model/user_data.dart';
+import 'package:car_project/screens/car_screen/car_screen.dart';
 import 'package:car_project/screens/login_screen/widgets/input_text.dart';
 import 'package:car_project/screens/login_screen/widgets/login_button.dart';
 import 'package:car_project/screens/login_screen/widgets/logo.dart';
+import 'package:car_project/screens/main_screen/admin_screen.dart';
 import 'package:car_project/screens/main_screen/main_screen.dart';
 import 'package:car_project/screens/signup_screen/signup_screen.dart';
 import 'package:flutter/material.dart';
@@ -149,8 +151,13 @@ class _LoginScreenState extends State<LoginScreen>{
 
       if(responseData['data'] != null){
         // provider에 유저 정보 추가
-        setting.setUser(UserData(id: responseData['data']['id'], email: responseData['data']['email'], name: responseData['data']['name']));
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
+        setting.setUser(UserData(id: responseData['data']['id'], email: responseData['data']['email'], name: responseData['data']['name'], role: responseData['data']['role']));
+        if(responseData['data']['role'] == 0){
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CarScreen()));
+        }else{
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
+        }
+
       }else{
         setState(() => wrongAccount = true);
       }
