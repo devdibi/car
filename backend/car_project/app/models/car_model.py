@@ -13,3 +13,4 @@ class Car(db.Model):
     car_type = db.Column(db.String(45), default='ETC', nullable=False)
     checked = db.Column(db.Integer, default=0)
     sections = db.relationship('Section', backref='car', lazy=True)
+    rentable = db.Column(db.Integer, default=0)

@@ -28,7 +28,7 @@ def get_car_list(user_id):
         return Response(200, "차량이 없습니다.", []).json(), 200
 
     # 차량 번호, 등록 일자, 차종 dict 생성
-    car_list = [{'id': car.id, 'car_number': car.car_number, 'created_at': car.create_at, 'car_type': car.car_type, 'checked': car.checked} for car in user_data.cars]
+    car_list = [{'id': car.id, 'car_number': car.car_number, 'created_at': car.create_at, 'car_type': car.car_type, 'checked': car.checked, 'rentable': car.rentable} for car in user_data.cars]
 
     print(f"차량 목록 조회 : {car_list}")  # debug
 

@@ -26,7 +26,7 @@ def get_user():
     if user is None:
         return Response(401, "아이디 및 비밀번호가 일치하지 않습니다.", None).json(), 401
     else:
-        data = {'id': user.id, 'email': user.email, 'name': user.name}
+        data = {'id': user.id, 'email': user.email, 'name': user.name, 'role': user.role}
         return Response(200, "로그인이 성공적으로 완료되었습니다.", data).json(), 200
 
 # 회원 가입 route
@@ -43,7 +43,7 @@ def signup():
         return Response(400, "이미 존재하는 유저입니다.", None).json(), 400
 
     # db에 저장
-    db.session.add(User(email=body['email'], password=body['password'], name=body['name']))
+    db.session.add(User(email=body['email'], password=body['password'], name=body['name'], role=body['role']))
     db.session.commit()
 
     return Response(200, "회원가입이 성공적으로 완료되었습니다.", None).json(), 200
