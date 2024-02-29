@@ -2,7 +2,7 @@
 # 차량 관련 기본 기능 view
 from flask import Blueprint, request
 from app.response.response import Response
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from app.models.car_model import Car
 from app.models.section_model import Section
@@ -71,15 +71,17 @@ def rent():
 @bp.route('/user/list/<int:user_id>', methods=['GET'])
 def get_user_rent_list(user_id):
     # 기간이 남은 대여 목록 조회
-    rent_list = (Rent.query.filter_by(customer_id=user_id)
-                 .filter(Rent.rented_at <= datetime.now().date())
-                 .filter(Rent.returned_at >= datetime.now().date()))
+    rent_list = Rent.query.filter_by(customer_id=user_id)
 
     car_list = []
+    rented_list = []
+    returned_list = []
     # 현재 이 차량들의 상태가 렌트 된 상태인지 확인
     for rent in rent_list:
         car = Car.query.filter_by(id=rent.car_id).first()
         car_list.append(car)
+        rented_list.append(rent.rented_at)
+        returned_list.append(rent.returned_at)
 
     data = [{
         'id': car.id,
@@ -87,8 +89,10 @@ def get_user_rent_list(user_id):
         'created_at': car.create_at,
         'car_type': car.car_type,
         'checked': car.checked,
-        'rentable': car.rentable
-    } for car in car_list]
+        'rentable': car.rentable,
+        'rented_at': rented_list[index],
+        'returned_at': returned_list[index],
+    } for index, car in enumerate(car_list)]
 
     return Response(200, "렌트 목록을 성공적으로 조회했습니다.", data).json(), 200
 
@@ -122,7 +126,7 @@ def get_main(user_id):
     rent = Rent.query.filter_by(customer_id=user_id).first()
 
     if rent is None:
-        return Response(204, "현재 대여중인 차량이 없습니다.", None).json(), 204
+        return Response(204, "현재 대여중인 차량이 없습니다.", []).json(), 200
 
     car = Car.query.filter_by(id=rent.car_id).first()
 
@@ -132,7 +136,9 @@ def get_main(user_id):
         'created_at': car.create_at,
         'car_type': car.car_type,
         'checked': car.checked,
-        'rentable': car.rentable
+        'rentable': car.rentable,
+        'rented_at': rent.rented_at,
+        'returned_at': rent.returned_at
     }
 
     return Response(200, "차량의 정보를 성공적으로 조회했습니다.", data).json(), 200
